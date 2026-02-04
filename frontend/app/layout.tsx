@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { ConfigProvider } from "antd";
+import BottomNavigation from "@/components/BottomNavigation";
 import Navigation from "@/components/Navigation";
 import { theme } from "@/lib/antd-theme";
 
@@ -29,6 +30,7 @@ export default function RootLayout({
           <ConfigProvider theme={theme}>
             <Navigation />
             {children}
+            <BottomNavigation />
           </ConfigProvider>
         </AntdRegistry>
       </body>

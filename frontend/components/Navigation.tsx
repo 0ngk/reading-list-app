@@ -7,6 +7,7 @@ import Link from "next/link";
 export default function Navigation() {
   return (
     <nav
+      className="top-navigation"
       style={{
         backgroundColor: "#ffffff",
         borderBottom: "1px solid #e2e8f0",
