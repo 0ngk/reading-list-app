@@ -22,7 +22,7 @@ export default async function Item({
       <div className="max-w-3xl mx-auto px-6 py-8 md:px-8 space-y-8">
         <Link
           href="/dashboard"
-          className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors duration-200"
+          className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 hover:border-slate-400 transition-colors duration-200 cursor-pointer shadow-sm"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to List
