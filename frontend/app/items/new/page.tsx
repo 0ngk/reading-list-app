@@ -1,9 +1,9 @@
 "use client";
 
-import { ArrowLeft, Info, Plus } from "lucide-react";
-import Link from "next/link";
+import { Info, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import BackButton from "@/components/BackButton";
 import { createItem } from "@/lib/fetch";
 
 interface FormData {
@@ -78,21 +78,15 @@ export default function NewItemPage() {
     }
   };
 
-  const handleCancel = () => {
-    router.push("/dashboard");
-  };
-
   return (
     <main className="min-h-screen bg-slate-50">
       <div className="max-w-2xl mx-auto px-6 py-8 md:px-8">
         {/* 戻るリンク */}
-        <Link
-          href="/dashboard"
-          className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-900 transition-colors duration-200 mb-6"
-        >
-          <ArrowLeft size={20} />
-          <span>ダッシュボードに戻る</span>
-        </Link>
+        <BackButton
+          variant="default"
+          label="ダッシュボードに戻る"
+          className="mb-6"
+        />
 
         {/* ページタイトル */}
         <h1 className="text-3xl font-bold text-slate-900 mb-8">
@@ -181,14 +175,11 @@ export default function NewItemPage() {
 
             {/* ボタン */}
             <div className="flex gap-4 pt-4">
-              <button
-                type="button"
-                onClick={handleCancel}
-                className="flex-1 px-6 py-3 border border-slate-300 text-slate-700 rounded-full hover:bg-slate-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500"
+              <BackButton
+                variant="form"
+                label="キャンセル"
                 disabled={isSubmitting}
-              >
-                キャンセル
-              </button>
+              />
               <button
                 type="submit"
                 disabled={isSubmitting}

@@ -1,5 +1,4 @@
 import {
-  ArrowLeft,
   Bookmark,
   ExternalLink,
   FileText,
@@ -7,8 +6,8 @@ import {
   Share2,
   Sparkles,
 } from "lucide-react";
-import Link from "next/link";
 import { fetchItemById } from "@/lib/fetch";
+import BackButton from "@/components/BackButton";
 
 export default async function Item({
   params,
@@ -20,13 +19,7 @@ export default async function Item({
   return (
     <main className="min-h-screen bg-slate-50">
       <div className="max-w-3xl mx-auto px-6 py-8 md:px-8 space-y-8">
-        <Link
-          href="/dashboard"
-          className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 hover:border-slate-400 transition-colors duration-200 cursor-pointer shadow-sm"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to List
-        </Link>
+        <BackButton variant="default" label="リストに戻る" />
 
         <article className="bg-white rounded-lg shadow-sm p-6 md:p-8 space-y-6">
           <div className="flex items-start justify-between gap-4">
