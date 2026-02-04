@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+import { AntdRegistry } from "@ant-design/nextjs-registry";
 import Navigation from "@/components/Navigation";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -22,8 +23,10 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className={`${plusJakartaSans.variable} antialiased`}>
-        <Navigation />
-        {children}
+        <AntdRegistry>
+          <Navigation />
+          {children}
+        </AntdRegistry>
       </body>
     </html>
   );
