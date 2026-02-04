@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@layer theme {
+  :root {
+    /* Primary Colors - Blue */
+    --color-primary: #3b82f6;
+    --color-primary-hover: #2563eb;
+    --color-secondary: #60a5fa;
+
+    /* CTA Colors - Orange */
+    --color-cta: #f97316;
+    --color-cta-hover: #ea580c;
+
+    /* Background */
+    --color-bg-main: #f8fafc;
+    --color-bg-card: #ffffff;
+
+    /* Text */
+    --color-text-primary: #1e293b;
+    --color-text-secondary: #475569;
+    --color-text-muted: #94a3b8;
+
+    /* Border */
+    --color-border: #e2e8f0;
+    --color-border-hover: #cbd5e1;
+
+    /* Font Family */
+    --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-800 antialiased;
+    font-family: var(--font-sans);
+  }
+
+  /* Smooth transitions */
+  * {
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Respect user motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
