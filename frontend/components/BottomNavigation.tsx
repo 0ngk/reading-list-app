@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  HomeOutlined,
-  PlusCircleOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
+import { HomeOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -24,12 +20,6 @@ export default function BottomNavigation() {
       label: "追加",
       isActive: pathname === "/items/new",
       isAddButton: true,
-    },
-    {
-      href: "/settings",
-      icon: SettingOutlined,
-      label: "設定",
-      isActive: pathname === "/settings",
     },
   ];
 
