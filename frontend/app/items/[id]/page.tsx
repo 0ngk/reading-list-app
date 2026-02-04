@@ -1,13 +1,15 @@
 import {
-  Bookmark,
-  ExternalLink,
-  FileText,
-  Globe,
-  Share2,
-  Sparkles,
-} from "lucide-react";
-import { fetchItemById } from "@/lib/fetch";
+  BookOutlined,
+  FileTextOutlined,
+  GlobalOutlined,
+  LinkOutlined,
+  ShareAltOutlined,
+  StarOutlined,
+} from "@ant-design/icons";
+import { Button, Card, Divider, Space } from "antd";
 import BackButton from "@/components/BackButton";
+import { Title, Paragraph } from "@/components/Typography";
+import { fetchItemById } from "@/lib/fetch";
 
 export default async function Item({
   params,
@@ -17,66 +19,127 @@ export default async function Item({
   const { id } = await params;
   const item = await fetchItemById(Number.parseInt(id, 10));
   return (
-    <main className="min-h-screen bg-slate-50">
-      <div className="max-w-3xl mx-auto px-6 py-8 md:px-8 space-y-8">
-        <BackButton variant="default" label="リストに戻る" />
+    <main style={{ minHeight: "100vh", backgroundColor: "#f8fafc" }}>
+      <div
+        style={{
+          maxWidth: 896,
+          margin: "0 auto",
+          padding: "32px 24px",
+        }}
+      >
+        <div style={{ marginBottom: 32 }}>
+          <BackButton variant="default" label="リストに戻る" />
+        </div>
 
-        <article className="bg-white rounded-lg shadow-sm p-6 md:p-8 space-y-6">
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex items-start gap-3 flex-1">
-              <FileText className="w-8 h-8 text-blue-600 flex-shrink-0 mt-1" />
-              <h1 className="text-3xl font-bold text-slate-800 leading-tight">
+        <Card>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "start",
+              justifyContent: "space-between",
+              gap: 16,
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "start",
+                gap: 12,
+                flex: 1,
+              }}
+            >
+              <FileTextOutlined
+                style={{
+                  fontSize: 32,
+                  color: "#3b82f6",
+                  flexShrink: 0,
+                  marginTop: 4,
+                }}
+              />
+              <Title level={1} style={{ margin: 0 }}>
                 {item.title}
-              </h1>
+              </Title>
             </div>
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                className="p-2 rounded-lg hover:bg-slate-100 transition-colors"
+            <Space>
+              <Button
+                type="text"
+                icon={<BookOutlined />}
                 title="ブックマーク"
-              >
-                <Bookmark className="w-5 h-5 text-slate-400 hover:text-yellow-500 transition-colors" />
-              </button>
-              <button
-                type="button"
-                className="p-2 rounded-lg hover:bg-slate-100 transition-colors"
-                title="共有"
-              >
-                <Share2 className="w-5 h-5 text-slate-400 hover:text-blue-500 transition-colors" />
-              </button>
-            </div>
+              />
+              <Button type="text" icon={<ShareAltOutlined />} title="共有" />
+            </Space>
           </div>
 
-          <div className="border-t border-slate-200 pt-6 space-y-2">
-            <div className="flex items-center gap-2">
-              <Globe className="w-4 h-4 text-slate-500" />
-              <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
+          <Divider />
+
+          <div style={{ marginBottom: 24 }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                marginBottom: 8,
+              }}
+            >
+              <GlobalOutlined style={{ fontSize: 16, color: "#475569" }} />
+              <Title
+                level={5}
+                style={{
+                  margin: 0,
+                  color: "#475569",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                }}
+              >
                 Original URL
-              </h2>
+              </Title>
             </div>
             <a
               href={item.originalUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-blue-600 hover:text-blue-700 hover:underline transition-colors duration-200"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                color: "#3b82f6",
+                textDecoration: "none",
+              }}
             >
               {item.originalUrl}
-              <ExternalLink className="w-3.5 h-3.5" />
+              <LinkOutlined style={{ fontSize: 14 }} />
             </a>
           </div>
 
-          <div className="border-t border-slate-200 pt-6 space-y-4">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-purple-500" />
-              <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
+          <Divider />
+
+          <div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                marginBottom: 16,
+              }}
+            >
+              <StarOutlined style={{ fontSize: 16, color: "#a855f7" }} />
+              <Title
+                level={5}
+                style={{
+                  margin: 0,
+                  color: "#475569",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                }}
+              >
                 AI Summary
-              </h2>
+              </Title>
             </div>
-            <p className="text-slate-700 leading-relaxed text-base">
+            <Paragraph style={{ color: "#1e293b", fontSize: 16, margin: 0 }}>
               {item.aiSummary}
-            </p>
+            </Paragraph>
           </div>
-        </article>
+        </Card>
       </div>
     </main>
   );

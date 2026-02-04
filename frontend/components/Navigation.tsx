@@ -1,25 +1,56 @@
-import { Plus } from "lucide-react";
+"use client";
+
+import { PlusOutlined } from "@ant-design/icons";
+import { Button } from "antd";
 import Link from "next/link";
 
 export default function Navigation() {
   return (
-    <nav className="bg-white border-b border-slate-200">
-      <div className="max-w-7xl mx-auto px-6 py-4 md:px-8">
-        <div className="flex items-center justify-between">
-          <Link
-            href="/dashboard"
-            className="text-2xl font-bold text-slate-900 hover:text-slate-700 transition-colors duration-200"
+    <nav
+      style={{
+        backgroundColor: "#ffffff",
+        borderBottom: "1px solid #e2e8f0",
+        padding: "16px 0",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: "1280px",
+          margin: "0 auto",
+          padding: "0 24px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Link
+          href="/dashboard"
+          style={{
+            fontSize: "24px",
+            fontWeight: 700,
+            color: "#1e293b",
+            textDecoration: "none",
+            transition: "color 0.2s",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = "#475569";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = "#1e293b";
+          }}
+        >
+          Reading List
+        </Link>
+        <Link href="/items/new" style={{ textDecoration: "none" }}>
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            size="large"
+            className="ant-btn-cta"
           >
-            Reading List
-          </Link>
-          <Link
-            href="/items/new"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
-          >
-            <Plus size={20} />
-            <span>記事を追加</span>
-          </Link>
-        </div>
+            記事を追加
+          </Button>
+        </Link>
       </div>
     </nav>
   );

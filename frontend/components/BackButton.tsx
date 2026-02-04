@@ -1,6 +1,7 @@
 "use client";
 
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeftOutlined } from "@ant-design/icons";
+import { Button } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -21,46 +22,51 @@ export default function BackButton({
 }: BackButtonProps) {
   const router = useRouter();
 
-  // 共通スタイル
-  const baseStyles =
-    "inline-flex items-center gap-2 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500";
-
   if (variant === "form") {
     // フォーム内ボタン（button要素 + useRouter）
-    const formStyles = `${baseStyles} flex-1 px-6 py-3 border border-slate-300 text-slate-700 rounded-full hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed ${className}`;
-
     return (
-      <button
-        type="button"
+      <Button
+        type="default"
         onClick={() => router.push(href)}
         disabled={disabled}
-        className={formStyles}
+        className={className}
         aria-label={label}
+        style={{ flex: 1 }}
       >
         {label}
-      </button>
+      </Button>
     );
   }
 
   if (variant === "text") {
     // テキストリンク
-    const textStyles = `${baseStyles} text-slate-600 hover:text-slate-900 ${className}`;
-
     return (
-      <Link href={href} className={textStyles} aria-label={label}>
-        <ArrowLeft size={20} />
-        <span>{label}</span>
+      <Link href={href} style={{ textDecoration: "none" }}>
+        <Button
+          type="link"
+          icon={<ArrowLeftOutlined />}
+          disabled={disabled}
+          className={className}
+          aria-label={label}
+        >
+          {label}
+        </Button>
       </Link>
     );
   }
 
   // default: ボタン風
-  const defaultStyles = `${baseStyles} px-4 py-2.5 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 hover:border-slate-400 shadow-sm ${className}`;
-
   return (
-    <Link href={href} className={defaultStyles} aria-label={label}>
-      <ArrowLeft className="w-4 h-4" />
-      {label}
+    <Link href={href} style={{ textDecoration: "none" }}>
+      <Button
+        type="default"
+        icon={<ArrowLeftOutlined />}
+        disabled={disabled}
+        className={className}
+        aria-label={label}
+      >
+        {label}
+      </Button>
     </Link>
   );
 }

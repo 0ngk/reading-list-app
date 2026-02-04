@@ -1,17 +1,21 @@
 "use client";
 
 import {
-  ArrowRight,
-  Bookmark,
-  Clock,
-  ExternalLink,
-  FileText,
-  Globe,
-} from "lucide-react";
-import Link from "next/link";
+  BookOutlined,
+  ClockCircleOutlined,
+  FileTextOutlined,
+  GlobalOutlined,
+  LinkOutlined,
+  RightOutlined,
+} from "@ant-design/icons";
+import { Button, Card } from "antd";
+import { useRouter } from "next/navigation";
 import type { ItemType } from "@/types/item";
+import { Title, Paragraph } from "./Typography";
 
 export default function Item({ item }: { item: ItemType }) {
+  const router = useRouter();
+
   // Extract domain from URL
   const getDomain = (url: string) => {
     try {
@@ -23,50 +27,92 @@ export default function Item({ item }: { item: ItemType }) {
   };
 
   return (
-    <article className="group">
-      <Link
-        href={`/items/${item.id}`}
-        className="block bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-1 p-5 md:p-6 cursor-pointer focus-within:ring-2 ring-blue-500 ring-offset-2"
+    <Card
+      hoverable
+      onClick={() => router.push(`/items/${item.id}`)}
+      style={{ height: "100%" }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "start",
+          justifyContent: "space-between",
+          marginBottom: 12,
+        }}
       >
-        <div className="flex items-start justify-between mb-3">
-          <div className="flex items-center gap-2 flex-1">
-            <FileText className="w-5 h-5 text-blue-500 flex-shrink-0" />
-            <h2 className="font-semibold text-xl text-slate-800 line-clamp-2 group-hover:text-blue-600 transition-colors duration-200">
-              {item.title}
-            </h2>
-          </div>
-          <button
-            type="button"
-            className="ml-2 p-1.5 rounded-full hover:bg-slate-100 transition-colors"
-            onClick={(e) => {
-              e.preventDefault();
-            }}
-          >
-            <Bookmark className="w-5 h-5 text-slate-400 hover:text-yellow-500 transition-colors" />
-          </button>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, flex: 1 }}>
+          <FileTextOutlined
+            style={{ fontSize: 20, color: "#3b82f6", flexShrink: 0 }}
+          />
+          <Title level={4} style={{ margin: 0 }} ellipsis={{ rows: 2 }}>
+            {item.title}
+          </Title>
         </div>
+        <Button
+          type="text"
+          icon={<BookOutlined />}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+          style={{ marginLeft: 8 }}
+        />
+      </div>
 
-        <div className="flex items-center gap-1.5 text-xs text-slate-500 mb-3">
-          <Clock className="w-3.5 h-3.5" />
-          <span>AI要約済み</span>
-        </div>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 6,
+          fontSize: 12,
+          color: "#475569",
+          marginBottom: 12,
+        }}
+      >
+        <ClockCircleOutlined style={{ fontSize: 14 }} />
+        <span>AI要約済み</span>
+      </div>
 
-        <p className="text-slate-600 text-sm leading-relaxed mb-4 line-clamp-3">
-          {item.aiSummary}
-        </p>
+      <Paragraph
+        ellipsis={{ rows: 3 }}
+        style={{ color: "#475569", fontSize: 14, marginBottom: 16 }}
+      >
+        {item.aiSummary}
+      </Paragraph>
 
-        <div className="flex items-center justify-between text-xs text-slate-500">
-          <span className="inline-flex items-center gap-1.5 font-medium">
-            <Globe className="w-3.5 h-3.5" />
-            {getDomain(item.originalUrl)}
-            <ExternalLink className="w-3 h-3 opacity-60" />
-          </span>
-          <span className="inline-flex items-center gap-1 text-blue-500 group-hover:text-blue-600 font-medium">
-            Read
-            <ArrowRight className="w-4 h-4" />
-          </span>
-        </div>
-      </Link>
-    </article>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          fontSize: 12,
+          color: "#475569",
+        }}
+      >
+        <span
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 6,
+            fontWeight: 500,
+          }}
+        >
+          <GlobalOutlined style={{ fontSize: 14 }} />
+          {getDomain(item.originalUrl)}
+          <LinkOutlined style={{ fontSize: 12, opacity: 0.6 }} />
+        </span>
+        <span
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 4,
+            color: "#3b82f6",
+            fontWeight: 500,
+          }}
+        >
+          Read
+          <RightOutlined style={{ fontSize: 14 }} />
+        </span>
+      </div>
+    </Card>
   );
 }

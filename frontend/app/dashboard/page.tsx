@@ -3,8 +3,14 @@ import { dummyItems } from "./dummy-data";
 
 export default function Dashboard() {
   return (
-    <main className="min-h-screen bg-slate-50">
-      <div className="max-w-7xl mx-auto px-6 py-8 md:px-8 lg:px-12">
+    <main style={{ minHeight: "100vh", backgroundColor: "#f8fafc" }}>
+      <div
+        style={{
+          maxWidth: 1280,
+          margin: "0 auto",
+          padding: "32px 24px",
+        }}
+      >
         <ItemList items={dummyItems} />
       </div>
     </main>

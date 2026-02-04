@@ -1,15 +1,21 @@
+import { Col, Row } from "antd";
 import type { ItemType } from "@/types/item";
 import Item from "./Item";
+import { Title } from "./Typography";
 
 export default function ItemList({ items }: { items: ItemType[] }) {
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-slate-800">Reading List</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div>
+      <Title level={2} style={{ marginBottom: 24 }}>
+        Reading List
+      </Title>
+      <Row gutter={[24, 24]}>
         {items.map((item) => (
-          <Item key={item.id.toString()} item={item} />
+          <Col key={item.id.toString()} xs={24} md={12} lg={8}>
+            <Item item={item} />
+          </Col>
         ))}
-      </div>
+      </Row>
     </div>
   );
 }
