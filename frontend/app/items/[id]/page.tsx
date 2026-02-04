@@ -1,6 +1,14 @@
+import {
+  ArrowLeft,
+  Bookmark,
+  ExternalLink,
+  FileText,
+  Globe,
+  Share2,
+  Sparkles,
+} from "lucide-react";
 import Link from "next/link";
 import { fetchItemById } from "@/lib/fetch";
-import { ArrowLeft, ExternalLink } from "lucide-react";
 
 export default async function Item({
   params,
@@ -21,19 +29,43 @@ export default async function Item({
         </Link>
 
         <article className="bg-white rounded-lg shadow-sm p-6 md:p-8 space-y-6">
-          <h1 className="text-3xl font-bold text-slate-800 leading-tight">
-            {item.title}
-          </h1>
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex items-start gap-3 flex-1">
+              <FileText className="w-8 h-8 text-blue-600 flex-shrink-0 mt-1" />
+              <h1 className="text-3xl font-bold text-slate-800 leading-tight">
+                {item.title}
+              </h1>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                className="p-2 rounded-lg hover:bg-slate-100 transition-colors"
+                title="ブックマーク"
+              >
+                <Bookmark className="w-5 h-5 text-slate-400 hover:text-yellow-500 transition-colors" />
+              </button>
+              <button
+                type="button"
+                className="p-2 rounded-lg hover:bg-slate-100 transition-colors"
+                title="共有"
+              >
+                <Share2 className="w-5 h-5 text-slate-400 hover:text-blue-500 transition-colors" />
+              </button>
+            </div>
+          </div>
 
           <div className="border-t border-slate-200 pt-6 space-y-2">
-            <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
-              Original URL
-            </h2>
+            <div className="flex items-center gap-2">
+              <Globe className="w-4 h-4 text-slate-500" />
+              <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
+                Original URL
+              </h2>
+            </div>
             <a
               href={item.originalUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-700 hover:underline transition-colors duration-200"
+              className="inline-flex items-center gap-1.5 text-blue-600 hover:text-blue-700 hover:underline transition-colors duration-200"
             >
               {item.originalUrl}
               <ExternalLink className="w-3.5 h-3.5" />
@@ -41,9 +73,12 @@ export default async function Item({
           </div>
 
           <div className="border-t border-slate-200 pt-6 space-y-4">
-            <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
-              AI Summary
-            </h2>
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-purple-500" />
+              <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
+                AI Summary
+              </h2>
+            </div>
             <p className="text-slate-700 leading-relaxed text-base">
               {item.aiSummary}
             </p>
