@@ -1,6 +1,6 @@
-import type { Item } from "@/types/item";
+import type { ItemType } from "@/types/item";
 
-export const dummyItems: Item[] = [
+export const dummyItems: ItemType[] = [
   {
     id: 1,
     title: "Example Item 1",

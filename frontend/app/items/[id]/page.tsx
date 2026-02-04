@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { fetchItemById } from "@/lib/fetch";
+import { ArrowLeft, ExternalLink } from "lucide-react";
 
 export default async function Item({
   params,
@@ -13,9 +14,10 @@ export default async function Item({
       <div className="max-w-3xl mx-auto px-6 py-8 md:px-8 space-y-8">
         <Link
           href="/dashboard"
-          className="inline-flex items-center text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors duration-200"
+          className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors duration-200"
         >
-          ← Back to List
+          <ArrowLeft className="w-4 h-4" />
+          Back to List
         </Link>
 
         <article className="bg-white rounded-lg shadow-sm p-6 md:p-8 space-y-6">
@@ -34,7 +36,7 @@ export default async function Item({
               className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-700 hover:underline transition-colors duration-200"
             >
               {item.originalUrl}
-              <span className="text-xs">↗</span>
+              <ExternalLink className="w-3.5 h-3.5" />
             </a>
           </div>
 

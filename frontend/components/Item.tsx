@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ItemType } from "@/types/item";
+import { ArrowRight } from "lucide-react";
 
 export default function Item({ item }: { item: ItemType }) {
   // Extract domain from URL
@@ -28,8 +29,9 @@ export default function Item({ item }: { item: ItemType }) {
 
         <div className="flex items-center justify-between text-xs text-slate-500">
           <span className="font-medium">{getDomain(item.originalUrl)}</span>
-          <span className="text-blue-500 group-hover:text-blue-600 font-medium">
-            Read →
+          <span className="inline-flex items-center gap-1 text-blue-500 group-hover:text-blue-600 font-medium">
+            Read
+            <ArrowRight className="w-4 h-4" />
           </span>
         </div>
       </Link>
