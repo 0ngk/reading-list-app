@@ -38,8 +38,7 @@ export class ArticleService {
     try {
       const result = await this.scraperService.scrape(dto.originalUrl);
       title = result.title || title;
-      const scrapedSummary =
-        result.excerpt || result.textContent.slice(0, 500);
+      const scrapedSummary = result.excerpt || result.textContent.slice(0, 500);
       if (scrapedSummary) {
         aiSummary = scrapedSummary;
       }
