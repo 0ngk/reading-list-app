@@ -1,4 +1,5 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
+import { ScraperService } from "../scraper/scraper.service.js";
 import {
   CreateArticleDto,
   CreateArticleResponseDto,
@@ -7,6 +8,10 @@ import {
 
 @Injectable()
 export class ArticleService {
+  private readonly logger = new Logger(ArticleService.name);
+
+  constructor(private readonly scraperService: ScraperService) {}
+
   async getArticles(): Promise<GetArticlesResponseDto> {
     return [
       {
@@ -27,11 +32,28 @@ export class ArticleService {
   async createArticle(
     dto: CreateArticleDto,
   ): Promise<CreateArticleResponseDto> {
+    let title = "Untitled";
+    let aiSummary = "要約を取得できませんでした。";
+
+    try {
+      const result = await this.scraperService.scrape(dto.originalUrl);
+      title = result.title || title;
+      const scrapedSummary =
+        result.excerpt || result.textContent.slice(0, 500);
+      if (scrapedSummary) {
+        aiSummary = scrapedSummary;
+      }
+    } catch (error) {
+      this.logger.warn(
+        `Scraping failed for ${dto.originalUrl}: ${error instanceof Error ? error.message : String(error)}`,
+      );
+    }
+
     return {
-      id: "generated-uuid",
-      title: "Generated Title",
+      id: crypto.randomUUID(),
+      title,
       originalUrl: dto.originalUrl,
-      aiSummary: "This is an AI-generated summary.",
+      aiSummary,
     };
   }
 }

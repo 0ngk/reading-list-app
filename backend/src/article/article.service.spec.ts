@@ -1,18 +1,40 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { ArticleService } from './article.service';
+import { Test, TestingModule } from "@nestjs/testing";
+import { ArticleService } from "./article.service";
 
-describe('ArticleService', () => {
+jest.mock("../scraper/scraper.service", () => {
+  return {
+    ScraperService: jest.fn().mockImplementation(() => ({
+      scrape: jest.fn().mockResolvedValue({
+        title: "Test Title",
+        textContent: "Test content",
+        excerpt: "Test excerpt",
+        siteName: null,
+      }),
+    })),
+  };
+});
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { ScraperService } = require("../scraper/scraper.service");
+
+describe("ArticleService", () => {
   let service: ArticleService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ArticleService],
+      providers: [
+        ArticleService,
+        {
+          provide: ScraperService,
+          useValue: new ScraperService(),
+        },
+      ],
     }).compile();
 
     service = module.get<ArticleService>(ArticleService);
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(service).toBeDefined();
   });
 });
