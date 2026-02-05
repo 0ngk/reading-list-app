@@ -1,6 +1,10 @@
 "use client";
 
-import { InfoCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  CloseOutlined,
+  InfoCircleOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import { Alert, Button, Card, Form, Input, Space } from "antd";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -127,6 +131,7 @@ export default function NewItemPage() {
                   variant="form"
                   label="キャンセル"
                   disabled={isSubmitting}
+                  icon={<CloseOutlined />}
                 />
                 <Button
                   type="primary"
