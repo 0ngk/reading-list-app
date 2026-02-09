@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { ScraperService } from "./scraper.service.js";
+import { ScraperService } from "./scraper.service";
 
 @Module({
   providers: [ScraperService],

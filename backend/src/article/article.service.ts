@@ -1,6 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { LlmService } from "src/llm/llm.service.js";
-import { ScraperService } from "../scraper/scraper.service.js";
+import { LlmService } from "src/llm/llm.service";
+import { ScraperService } from "../scraper/scraper.service";
 import {
   CreateArticleDto,
   CreateArticleResponseDto,

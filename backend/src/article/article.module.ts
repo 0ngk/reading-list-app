@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
-import { LlmService } from "src/llm/llm.service.js";
-import { ScraperModule } from "../scraper/scraper.module.js";
+import { LlmService } from "src/llm/llm.service";
+import { ScraperModule } from "../scraper/scraper.module";
 import { ArticleController } from "./article.controller";
 import { ArticleService } from "./article.service";
 

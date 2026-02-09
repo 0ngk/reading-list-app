@@ -1,7 +1,7 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { extractContent } from "./extractors/content.extractor.js";
-import { extractTitle } from "./extractors/title.extractor.js";
-import type { ScrapeResult } from "./types/scraper.types.js";
+import { extractContent } from "./extractors/content.extractor";
+import { extractTitle } from "./extractors/title.extractor";
+import type { ScrapeResult } from "./types/scraper.types";
 
 const TIMEOUT_MS = 10_000;
 const MAX_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
