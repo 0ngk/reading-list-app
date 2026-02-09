@@ -11,6 +11,12 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
+  voicevox:
+    image: voicevox/voicevox_engine:cpu-latest
+    platform: linux/amd64
+    container_name: voicevox
+    ports:
+      - "${VOICEVOX_PORT}:50021"
 
 volumes:
   reading-list-app-db-store:
