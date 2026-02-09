@@ -4,7 +4,7 @@ import {
   CreateArticleDto,
   CreateArticleResponseDto,
   GetArticlesResponseDto,
-} from "./shemas/article.shema";
+} from "./schemas/article.schema";
 
 @Injectable()
 export class ArticleService {

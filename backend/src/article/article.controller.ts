@@ -5,8 +5,8 @@ import type {
   CreateArticleDto,
   CreateArticleResponseDto,
   GetArticlesResponseDto,
-} from "./shemas/article.shema";
-import { createArticleSchema } from "./shemas/article.shema";
+} from "./schemas/article.schema";
+import { createArticleSchema } from "./schemas/article.schema";
 
 @Controller("articles")
 export class ArticleController {

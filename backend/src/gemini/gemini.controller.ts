@@ -5,7 +5,7 @@ import {
   type GenerateDto,
   type GenerateResponseDto,
   generateSchema,
-} from "./shemas/gemini.schema";
+} from "./schemas/gemini.schema";
 
 @Controller("gemini")
 export class GeminiController {
