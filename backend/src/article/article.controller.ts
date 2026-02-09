@@ -7,6 +7,7 @@ import type {
   GetArticlesResponseDto,
 } from "./shemas/article.shema";
 import { createArticleSchema } from "./shemas/article.shema";
+
 @Controller("articles")
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
