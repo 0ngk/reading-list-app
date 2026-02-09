@@ -11,6 +11,6 @@ export class GeminiService {
       model: MODEL_NAME,
       contents: prompt,
     });
-    return res.text ?? '';
+    return res.text ?? "";
   }
 }
