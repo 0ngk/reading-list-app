@@ -6,6 +6,7 @@ import { ArticleModule } from "./article/article.module";
 import { validate } from "./config/env.validation";
 import { DatabaseModule } from "./database/database.module";
 import { GeminiModule } from "./gemini/gemini.module";
+import { LlmModule } from './llm/llm.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { GeminiModule } from "./gemini/gemini.module";
     ArticleModule,
     DatabaseModule,
     GeminiModule,
+    LlmModule,
   ],
   controllers: [AppController],
   providers: [AppService],
