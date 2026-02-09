@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:18-alpine
+    platform: linux/amd64
+    container_name: postgres
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - reading-list-app-db-store:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+
+volumes:
+  reading-list-app-db-store:
