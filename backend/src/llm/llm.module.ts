@@ -1,8 +1,10 @@
 import { Module } from "@nestjs/common";
-import { GeminiService } from "src/gemini/gemini.service";
+import { GeminiModule } from "src/gemini/gemini.module";
 import { LlmService } from "./llm.service";
 
 @Module({
-  providers: [LlmService, GeminiService],
+  imports: [GeminiModule],
+  providers: [LlmService],
+  exports: [LlmService],
 })
 export class LlmModule {}
