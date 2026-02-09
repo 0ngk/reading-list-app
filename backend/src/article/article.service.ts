@@ -1,16 +1,21 @@
 import { Injectable, Logger } from "@nestjs/common";
+import { LlmService } from "src/llm/llm.service.js";
 import { ScraperService } from "../scraper/scraper.service.js";
 import {
   CreateArticleDto,
   CreateArticleResponseDto,
   GetArticlesResponseDto,
 } from "./schemas/article.schema";
+import { buildSummaryPrompt } from "./utils/article.util";
 
 @Injectable()
 export class ArticleService {
   private readonly logger = new Logger(ArticleService.name);
 
-  constructor(private readonly scraperService: ScraperService) {}
+  constructor(
+    private readonly scraperService: ScraperService,
+    private readonly llmService: LlmService,
+  ) {}
 
   async getArticles(): Promise<GetArticlesResponseDto> {
     return [
@@ -40,7 +45,10 @@ export class ArticleService {
       title = result.title || title;
       const scrapedSummary = result.excerpt || result.textContent.slice(0, 500);
       if (scrapedSummary) {
-        aiSummary = scrapedSummary;
+        const llmResponse = await this.llmService.generateText({
+          prompt: buildSummaryPrompt(scrapedSummary),
+        });
+        aiSummary = llmResponse.text;
       }
     } catch (error) {
       this.logger.warn(
