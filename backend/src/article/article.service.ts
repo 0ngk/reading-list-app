@@ -43,10 +43,13 @@ export class ArticleService {
     try {
       const result = await this.scraperService.scrape(dto.originalUrl);
       title = result.title || title;
-      const scrapedSummary = result.excerpt || result.textContent.slice(0, 500);
-      if (scrapedSummary) {
+      const scrapedContent = result.textContent;
+      if (scrapedContent) {
+        this.logger.debug(
+          `Scraped content length: ${scrapedContent.length} characters`,
+        );
         const llmResponse = await this.llmService.generateText({
-          prompt: buildSummaryPrompt(scrapedSummary),
+          prompt: buildSummaryPrompt(scrapedContent),
         });
         aiSummary = llmResponse.text;
       }

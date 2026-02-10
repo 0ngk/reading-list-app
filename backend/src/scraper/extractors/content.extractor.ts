@@ -1,5 +1,5 @@
-import { Readability } from "@mozilla/readability";
 import { JSDOM } from "jsdom";
+import { MAX_CONTENT_LENGTH } from "../constants/content.constants";
 
 interface ContentResult {
   textContent: string;
@@ -9,21 +9,23 @@ interface ContentResult {
 
 export function extractContent(html: string, url: string): ContentResult {
   const dom = new JSDOM(html, { url });
-  const reader = new Readability(dom.window.document);
-  const article = reader.parse();
+  const document = dom.window.document;
 
-  if (article) {
-    return {
-      textContent: article.textContent?.trim() ?? "",
-      excerpt: article.excerpt?.trim() ?? "",
-      siteName: article.siteName ?? null,
-    };
+  // script、styleタグを除外
+  const scripts = document.querySelectorAll("script, style, noscript");
+  for (const el of scripts) {
+    el.remove();
   }
 
-  const fallbackText = dom.window.document.body?.textContent?.trim() ?? "";
+  // body全体のテキストを取得
+  const fullText = document.body?.textContent?.trim() ?? "";
+
+  // 最大文字数に制限
+  const textContent = fullText.slice(0, MAX_CONTENT_LENGTH);
+
   return {
-    textContent: fallbackText,
-    excerpt: fallbackText.slice(0, 200),
+    textContent,
+    excerpt: textContent.slice(0, 200), // プレビュー用に短い抜粋も保持
     siteName: null,
   };
 }
