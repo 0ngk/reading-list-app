@@ -1,4 +1,5 @@
 import { Test, TestingModule } from "@nestjs/testing";
+import { LlmService } from "../llm/llm.service";
 import { ArticleService } from "./article.service";
 
 jest.mock("../scraper/scraper.service", () => {
@@ -27,6 +28,12 @@ describe("ArticleService", () => {
         {
           provide: ScraperService,
           useValue: new ScraperService(),
+        },
+        {
+          provide: LlmService,
+          useValue: {
+            generateText: jest.fn().mockResolvedValue({ text: "summary" }),
+          },
         },
       ],
     }).compile();

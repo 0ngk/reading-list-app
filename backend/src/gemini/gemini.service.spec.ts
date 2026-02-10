@@ -1,4 +1,5 @@
 import { Test, TestingModule } from "@nestjs/testing";
+import { GENAI } from "./constants/gemini.constants";
 import { GeminiService } from "./gemini.service";
 
 describe("GeminiService", () => {
@@ -6,7 +7,17 @@ describe("GeminiService", () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [GeminiService],
+      providers: [
+        GeminiService,
+        {
+          provide: GENAI,
+          useValue: {
+            models: {
+              generateContent: jest.fn().mockResolvedValue({ text: "text" }),
+            },
+          },
+        },
+      ],
     }).compile();
 
     service = module.get<GeminiService>(GeminiService);

@@ -1,4 +1,5 @@
 import { Test, TestingModule } from "@nestjs/testing";
+import { LlmService } from "../llm/llm.service";
 import { ArticleController } from "./article.controller";
 import { ArticleService } from "./article.service";
 
@@ -24,6 +25,12 @@ describe("ArticleController", () => {
         {
           provide: ScraperService,
           useValue: new ScraperService(),
+        },
+        {
+          provide: LlmService,
+          useValue: {
+            generateText: jest.fn().mockResolvedValue({ text: "summary" }),
+          },
         },
       ],
     }).compile();

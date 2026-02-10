@@ -2,6 +2,7 @@ import { GoogleGenAI } from "@google/genai";
 import { Module } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { EnvironmentVariables } from "src/config/env.validation";
+import { LLM_CLIENT } from "src/llm/llm.client";
 import { GENAI } from "./constants/gemini.constants";
 import { GeminiController } from "./gemini.controller";
 export { GENAI };
@@ -22,8 +23,12 @@ import { GeminiService } from "./gemini.service";
       },
     },
     GeminiService,
+    {
+      provide: LLM_CLIENT,
+      useExisting: GeminiService,
+    },
   ],
   controllers: [GeminiController],
-  exports: [GENAI, GeminiService],
+  exports: [GENAI, GeminiService, LLM_CLIENT],
 })
 export class GeminiModule {}

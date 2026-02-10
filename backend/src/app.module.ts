@@ -5,7 +5,6 @@ import { AppService } from "./app.service";
 import { ArticleModule } from "./article/article.module";
 import { validate } from "./config/env.validation";
 import { DatabaseModule } from "./database/database.module";
-import { GeminiModule } from "./gemini/gemini.module";
 import { LlmModule } from "./llm/llm.module";
 import { VoicevoxModule } from "./voicevox/voicevox.module";
 
@@ -18,7 +17,6 @@ import { VoicevoxModule } from "./voicevox/voicevox.module";
     }),
     ArticleModule,
     DatabaseModule,
-    GeminiModule,
     LlmModule,
     VoicevoxModule,
   ],
