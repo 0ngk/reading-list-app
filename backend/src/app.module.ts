@@ -7,6 +7,7 @@ import { validate } from "./config/env.validation";
 import { DatabaseModule } from "./database/database.module";
 import { GeminiModule } from "./gemini/gemini.module";
 import { LlmModule } from "./llm/llm.module";
+import { VoicevoxModule } from "./voicevox/voicevox.module";
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { LlmModule } from "./llm/llm.module";
     DatabaseModule,
     GeminiModule,
     LlmModule,
+    VoicevoxModule,
   ],
   controllers: [AppController],
   providers: [AppService],

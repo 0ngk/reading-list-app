@@ -14,6 +14,10 @@ const envSchema = z
 
     // Gemini API
     GEMINI_API_KEY: z.string().min(1).optional(),
+
+    // VOICEVOX
+    VOICEVOX_PORT: z.coerce.number().int().positive().default(50021),
+    VOICEVOX_HOST: z.string().default("localhost"),
   })
   .refine((data) => data.GEMINI_API_KEY, {
     message: "GEMINI_API_KEY must be provided",
