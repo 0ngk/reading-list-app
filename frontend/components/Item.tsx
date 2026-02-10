@@ -11,7 +11,7 @@ import {
 import { Button, Card } from "antd";
 import { useRouter } from "next/navigation";
 import type { ItemType } from "@/types/item";
-import { Title, Paragraph } from "./Typography";
+import { Paragraph, Title } from "./Typography";
 
 export default function Item({ item }: { item: ItemType }) {
   const router = useRouter();

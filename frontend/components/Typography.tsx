@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
 import { Typography as OriginTypography } from "antd";
 import type { ParagraphProps } from "antd/es/typography/Paragraph";
 import type { TitleProps } from "antd/es/typography/Title";
+import React from "react";
 
 const Title = React.forwardRef<
   HTMLElement,

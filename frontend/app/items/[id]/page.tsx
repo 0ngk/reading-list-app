@@ -8,7 +8,7 @@ import {
 } from "@ant-design/icons";
 import { Button, Card, Divider, Space } from "antd";
 import BackButton from "@/components/BackButton";
-import { Title, Paragraph } from "@/components/Typography";
+import { Paragraph, Title } from "@/components/Typography";
 import { fetchItemById } from "@/lib/fetch";
 
 export default async function Item({
