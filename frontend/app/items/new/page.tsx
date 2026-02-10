@@ -10,10 +10,10 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import BackButton from "@/components/BackButton";
 import { Title } from "@/components/Typography";
+import { ApiError, NetworkError } from "@/lib/api-error";
 import { createItem } from "@/lib/fetch";
 
 interface FormData {
-  title: string;
   url: string;
 }
 
@@ -29,16 +29,19 @@ export default function NewItemPage() {
 
     try {
       await createItem({
-        title: values.title,
         url: values.url,
       });
 
       // 成功時はダッシュボードにリダイレクト
       router.push("/dashboard");
     } catch (error) {
-      setSubmitError(
-        error instanceof Error ? error.message : "記事の追加に失敗しました",
-      );
+      if (error instanceof ApiError) {
+        setSubmitError(error.getUserMessage());
+      } else if (error instanceof NetworkError) {
+        setSubmitError("ネットワーク接続を確認してください");
+      } else {
+        setSubmitError("記事の追加に失敗しました");
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -71,24 +74,6 @@ export default function NewItemPage() {
             onFinish={handleFinish}
             requiredMark="optional"
           >
-            {/* タイトル */}
-            <Form.Item
-              label="タイトル"
-              name="title"
-              rules={[
-                { required: true, message: "タイトルを入力してください" },
-                {
-                  max: 200,
-                  message: "タイトルは200文字以内で入力してください",
-                },
-              ]}
-            >
-              <Input
-                placeholder="記事のタイトルを入力してください"
-                disabled={isSubmitting}
-              />
-            </Form.Item>
-
             {/* URL */}
             <Form.Item
               label="URL"
@@ -107,7 +92,7 @@ export default function NewItemPage() {
 
             {/* AI要約の注意書き */}
             <Alert
-              description="AI要約は記事追加後に自動生成されます"
+              description="記事のタイトルとAI要約は自動生成されます"
               type="info"
               icon={<InfoCircleOutlined />}
               showIcon

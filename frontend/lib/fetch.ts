@@ -1,6 +1,7 @@
 import type { ItemType } from "@/types/item";
+import { apiClient } from "./api-client";
 
-export const fetchItemById = (id: number) => {
+export const fetchItemById = (id: string) => {
   return {
     id,
     title: `Item foo`,
@@ -10,17 +11,34 @@ export const fetchItemById = (id: number) => {
 };
 
 interface CreateItemData {
-  title: string;
   url: string;
 }
 
+interface CreateArticleRequest {
+  originalUrl: string;
+}
+
+interface CreateArticleResponse {
+  id: string;
+  title: string;
+  originalUrl: string;
+  aiSummary: string;
+}
+
 export const createItem = async (data: CreateItemData): Promise<ItemType> => {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  const request: CreateArticleRequest = {
+    originalUrl: data.url,
+  };
+
+  const response = await apiClient.post<CreateArticleResponse>(
+    "/articles",
+    request,
+  );
 
   return {
-    id: Date.now(),
-    title: data.title,
-    originalUrl: data.url,
-    aiSummary: "AI要約を生成中...",
+    id: response.id,
+    title: response.title,
+    originalUrl: response.originalUrl,
+    aiSummary: response.aiSummary,
   };
 };
