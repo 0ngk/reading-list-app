@@ -9,8 +9,16 @@ import {
   Res,
 } from "@nestjs/common";
 import type { Response } from "express";
+import { ZodValidationPipe } from "src/shared/pipes/zod-validation.pipe";
 import { DEFAULT_STYLE_ID } from "./constants/voicevox.constants";
-import type { TextToSpeechOptions } from "./types/voicevox.types";
+import type {
+  TextToSpeechOptionsDto,
+  TextToSpeechQueryDto,
+} from "./schemas/voicevox.schema";
+import {
+  textToSpeechOptionsSchema,
+  textToSpeechQuerySchema,
+} from "./schemas/voicevox.schema";
 import { VoicevoxService } from "./voicevox.service";
 
 @Controller("voicevox")
@@ -25,21 +33,15 @@ export class VoicevoxController {
   @Post("tts")
   @HttpCode(HttpStatus.OK)
   async textToSpeech(
-    @Query("text") text: string,
-    @Query("styleId") styleId: string | undefined,
-    @Body() options: TextToSpeechOptions | undefined,
+    @Query(new ZodValidationPipe(textToSpeechQuerySchema))
+    query: TextToSpeechQueryDto,
+    @Body(new ZodValidationPipe(textToSpeechOptionsSchema.optional()))
+    options: TextToSpeechOptionsDto | undefined,
     @Res() res: Response,
   ) {
-    const id = styleId ? Number.parseInt(styleId, 10) : DEFAULT_STYLE_ID;
-    if (styleId && Number.isNaN(id)) {
-      res.status(HttpStatus.BAD_REQUEST).json({
-        message: "styleId must be a number",
-        statusCode: HttpStatus.BAD_REQUEST,
-      });
-      return;
-    }
+    const id = query.styleId ?? DEFAULT_STYLE_ID;
     const wav = await this.voicevoxService.textToSpeech(
-      text,
+      query.text,
       id,
       options ?? undefined,
     );
