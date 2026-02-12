@@ -27,6 +27,11 @@ interface CreateArticleResponse {
   aiSummary: string;
 }
 
+export const fetchArticles = async (): Promise<ItemType[]> => {
+  const response = await apiClient.get<ItemType[]>("/articles");
+  return response;
+};
+
 export const createItem = async (data: CreateItemData): Promise<ItemType> => {
   const request: CreateArticleRequest = {
     text: data.text,

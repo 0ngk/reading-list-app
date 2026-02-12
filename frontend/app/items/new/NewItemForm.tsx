@@ -70,9 +70,7 @@ export default function NewItemForm() {
       <Form.Item
         label="URL"
         name="originalUrl"
-        rules={[
-          { type: "url", message: "有効なURLを入力してください" },
-        ]}
+        rules={[{ type: "url", message: "有効なURLを入力してください" }]}
       >
         <Input
           type="url"
