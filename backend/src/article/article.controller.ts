@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { ZodValidationPipe } from "src/shared/pipes/zod-validation.pipe";
 import { ArticleService } from "./article.service";
 import type {
+  ArticleResponseDto,
   CreateArticleDto,
   CreateArticleResponseDto,
   GetArticlesResponseDto,
@@ -15,6 +16,13 @@ export class ArticleController {
   @Get()
   async getArticles(): Promise<GetArticlesResponseDto> {
     return this.articleService.getArticles();
+  }
+
+  @Get(":id")
+  async getArticleById(
+    @Param("id") id: string,
+  ): Promise<ArticleResponseDto> {
+    return this.articleService.getArticleById(id);
   }
 
   @Post()

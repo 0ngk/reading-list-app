@@ -1,13 +1,8 @@
 import type { ItemType } from "@/types/item";
 import { apiClient } from "./api-client";
 
-export const fetchItemById = (id: string) => {
-  return {
-    id,
-    title: `Item foo`,
-    originalUrl: `https://example.com/item`,
-    aiSummary: `This is a summary.`,
-  };
+export const fetchItemById = async (id: string): Promise<ItemType> => {
+  return apiClient.get<ItemType>(`/articles/${id}`);
 };
 
 interface CreateItemData {

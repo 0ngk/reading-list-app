@@ -7,8 +7,10 @@ import {
   StarOutlined,
 } from "@ant-design/icons";
 import { Button, Card, Divider, Space } from "antd";
+import { notFound } from "next/navigation";
 import BackButton from "@/components/BackButton";
 import { Paragraph, Title } from "@/components/Typography";
+import { ApiError } from "@/lib/api-error";
 import { fetchItemById } from "@/lib/fetch";
 
 export default async function Item({
@@ -17,7 +19,15 @@ export default async function Item({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const item = await fetchItemById(Number.parseInt(id, 10));
+  let item: Awaited<ReturnType<typeof fetchItemById>>;
+  try {
+    item = await fetchItemById(id);
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) {
+      notFound();
+    }
+    throw error;
+  }
   return (
     <main style={{ minHeight: "100vh", backgroundColor: "#f8fafc" }}>
       <div

@@ -22,6 +22,7 @@ export const createArticleSchema = z
   })
   .strict();
 
-export type GetArticlesResponseDto = z.infer<typeof articleSchema>[];
+export type ArticleResponseDto = z.infer<typeof articleSchema>;
+export type GetArticlesResponseDto = ArticleResponseDto[];
 export type CreateArticleDto = z.infer<typeof createArticleSchema>;
-export type CreateArticleResponseDto = z.infer<typeof articleSchema>;
+export type CreateArticleResponseDto = ArticleResponseDto;

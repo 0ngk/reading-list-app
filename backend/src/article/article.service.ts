@@ -1,10 +1,11 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { LlmService } from "src/llm/llm.service";
 import type { Repository } from "typeorm";
 import { AI_SUMMARY_DEFAULT } from "./constants/article.constant";
 import { Article } from "./entities/article.entity";
 import type {
+  ArticleResponseDto,
   CreateArticleDto,
   CreateArticleResponseDto,
   GetArticlesResponseDto,
@@ -22,6 +23,19 @@ export class ArticleService {
     private readonly articleRepository: Repository<Article>,
     private readonly llmService: LlmService,
   ) {}
+
+  async getArticleById(id: string): Promise<ArticleResponseDto> {
+    const article = await this.articleRepository.findOneBy({ id });
+    if (!article) {
+      throw new NotFoundException(`Article with id ${id} not found`);
+    }
+    return {
+      id: article.id,
+      title: article.title,
+      originalUrl: article.originalUrl ?? undefined,
+      aiSummary: article.aiSummary,
+    };
+  }
 
   async getArticles(): Promise<GetArticlesResponseDto> {
     const articles = await this.articleRepository.find({
