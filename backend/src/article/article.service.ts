@@ -1,7 +1,10 @@
 import { Injectable, Logger } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
 import { LlmService } from "src/llm/llm.service";
+import type { Repository } from "typeorm";
 import { AI_SUMMARY_DEFAULT } from "./constants/article.constant";
-import {
+import { Article } from "./entities/article.entity";
+import type {
   CreateArticleDto,
   CreateArticleResponseDto,
   GetArticlesResponseDto,
@@ -14,23 +17,22 @@ const MAX_CONTENT_LENGTH = 10000;
 export class ArticleService {
   private readonly logger = new Logger(ArticleService.name);
 
-  constructor(private readonly llmService: LlmService) {}
+  constructor(
+    @InjectRepository(Article)
+    private readonly articleRepository: Repository<Article>,
+    private readonly llmService: LlmService,
+  ) {}
 
   async getArticles(): Promise<GetArticlesResponseDto> {
-    return [
-      {
-        id: "",
-        title: "First Article",
-        originalUrl: "http://example.com/first-article",
-        aiSummary: "This is the content of the first article.",
-      },
-      {
-        id: "",
-        title: "Second Article",
-        originalUrl: "http://example.com/second-article",
-        aiSummary: "This is the content of the second article.",
-      },
-    ];
+    const articles = await this.articleRepository.find({
+      order: { createdAt: "DESC" },
+    });
+    return articles.map((article) => ({
+      id: article.id,
+      title: article.title,
+      originalUrl: article.originalUrl ?? undefined,
+      aiSummary: article.aiSummary,
+    }));
   }
 
   async createArticle(
@@ -54,11 +56,18 @@ export class ArticleService {
       );
     }
 
-    return {
-      id: crypto.randomUUID(),
+    const article = this.articleRepository.create({
       title,
-      originalUrl: dto.originalUrl,
+      originalUrl: dto.originalUrl ?? null,
       aiSummary,
+    });
+    const saved = await this.articleRepository.save(article);
+
+    return {
+      id: saved.id,
+      title: saved.title,
+      originalUrl: saved.originalUrl ?? undefined,
+      aiSummary: saved.aiSummary,
     };
   }
 
