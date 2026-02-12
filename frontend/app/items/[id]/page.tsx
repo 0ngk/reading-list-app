@@ -70,46 +70,50 @@ export default async function Item({
             </Space>
           </div>
 
-          <Divider />
+          {item.originalUrl && (
+            <>
+              <Divider />
 
-          <div style={{ marginBottom: 24 }}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 8,
-                marginBottom: 8,
-              }}
-            >
-              <GlobalOutlined style={{ fontSize: 16, color: "#475569" }} />
-              <Title
-                level={5}
-                style={{
-                  margin: 0,
-                  color: "#475569",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.05em",
-                }}
-              >
-                Original URL
-              </Title>
-            </div>
-            <a
-              href={item.originalUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 6,
-                color: "#3b82f6",
-                textDecoration: "none",
-              }}
-            >
-              {item.originalUrl}
-              <LinkOutlined style={{ fontSize: 14 }} />
-            </a>
-          </div>
+              <div style={{ marginBottom: 24 }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    marginBottom: 8,
+                  }}
+                >
+                  <GlobalOutlined style={{ fontSize: 16, color: "#475569" }} />
+                  <Title
+                    level={5}
+                    style={{
+                      margin: 0,
+                      color: "#475569",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.05em",
+                    }}
+                  >
+                    Original URL
+                  </Title>
+                </div>
+                <a
+                  href={item.originalUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 6,
+                    color: "#3b82f6",
+                    textDecoration: "none",
+                  }}
+                >
+                  {item.originalUrl}
+                  <LinkOutlined style={{ fontSize: 14 }} />
+                </a>
+              </div>
+            </>
+          )}
 
           <Divider />
 

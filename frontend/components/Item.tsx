@@ -88,18 +88,20 @@ export default function Item({ item }: { item: ItemType }) {
           color: "#475569",
         }}
       >
-        <span
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 6,
-            fontWeight: 500,
-          }}
-        >
-          <GlobalOutlined style={{ fontSize: 14 }} />
-          {getDomain(item.originalUrl)}
-          <LinkOutlined style={{ fontSize: 12, opacity: 0.6 }} />
-        </span>
+        {item.originalUrl && (
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              fontWeight: 500,
+            }}
+          >
+            <GlobalOutlined style={{ fontSize: 14 }} />
+            {getDomain(item.originalUrl)}
+            <LinkOutlined style={{ fontSize: 12, opacity: 0.6 }} />
+          </span>
+        )}
         <span
           style={{
             display: "inline-flex",

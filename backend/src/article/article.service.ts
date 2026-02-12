@@ -1,6 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { LlmService } from "src/llm/llm.service";
-import { ScraperService } from "../scraper/scraper.service";
+import { AI_SUMMARY_DEFAULT } from "./constants/article.constant";
 import {
   CreateArticleDto,
   CreateArticleResponseDto,
@@ -8,14 +8,13 @@ import {
 } from "./schemas/article.schema";
 import { buildSummaryPrompt } from "./utils/article.util";
 
+const MAX_CONTENT_LENGTH = 10000;
+
 @Injectable()
 export class ArticleService {
   private readonly logger = new Logger(ArticleService.name);
 
-  constructor(
-    private readonly scraperService: ScraperService,
-    private readonly llmService: LlmService,
-  ) {}
+  constructor(private readonly llmService: LlmService) {}
 
   async getArticles(): Promise<GetArticlesResponseDto> {
     return [
@@ -37,25 +36,21 @@ export class ArticleService {
   async createArticle(
     dto: CreateArticleDto,
   ): Promise<CreateArticleResponseDto> {
-    let title = "Untitled";
-    let aiSummary = "要約を取得できませんでした。";
+    const title = this.extractTitle(dto.text);
+    let aiSummary = AI_SUMMARY_DEFAULT;
 
     try {
-      const result = await this.scraperService.scrape(dto.originalUrl);
-      title = result.title || title;
-      const scrapedContent = result.textContent;
-      if (scrapedContent) {
-        this.logger.debug(
-          `Scraped content length: ${scrapedContent.length} characters`,
-        );
-        const llmResponse = await this.llmService.generateText({
-          prompt: buildSummaryPrompt(scrapedContent),
-        });
-        aiSummary = llmResponse.text;
-      }
+      const truncatedText = dto.text.slice(0, MAX_CONTENT_LENGTH);
+      this.logger.debug(
+        `Input text length: ${dto.text.length} characters (truncated to ${truncatedText.length})`,
+      );
+      const llmResponse = await this.llmService.generateText({
+        prompt: buildSummaryPrompt(truncatedText),
+      });
+      aiSummary = llmResponse.text;
     } catch (error) {
       this.logger.warn(
-        `Scraping failed for ${dto.originalUrl}: ${error instanceof Error ? error.message : String(error)}`,
+        `AI summary generation failed: ${error instanceof Error ? error.message : String(error)}`,
       );
     }
 
@@ -65,5 +60,13 @@ export class ArticleService {
       originalUrl: dto.originalUrl,
       aiSummary,
     };
+  }
+
+  private extractTitle(text: string): string {
+    // biome-ignore lint/suspicious/noControlCharactersInRegex: intentional control character removal
+    const cleaned = text.replace(/[\x00-\x1f]/g, " ").trim();
+    const firstLine = cleaned.split("\n")[0]?.trim() ?? "";
+    const raw = firstLine.length > 0 ? firstLine : cleaned;
+    return raw.slice(0, 50).trim() || "Untitled";
   }
 }
