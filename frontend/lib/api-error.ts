@@ -23,8 +23,8 @@ export class ApiError extends Error {
     }
 
     if ("errors" in this.problemDetails && this.problemDetails.errors) {
-      const errors = Object.entries(this.problemDetails.errors)
-        .map(([field, messages]) => `${field}: ${messages.join(", ")}`)
+      const errors = this.problemDetails.errors
+        .map((error) => `${error.field}: ${error.message}`)
         .join("\n");
       return `入力エラー:\n${errors}`;
     }

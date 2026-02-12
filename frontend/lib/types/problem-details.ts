@@ -6,6 +6,11 @@ export interface ProblemDetails {
   instance?: string;
 }
 
+export interface ValidationErrorDetail {
+  field: string;
+  message: string;
+}
+
 export interface ValidationProblemDetails extends ProblemDetails {
-  errors?: Record<string, string[]>;
+  errors?: ValidationErrorDetail[];
 }
