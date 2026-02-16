@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const GRADIENTS = [
   "linear-gradient(135deg, #581c87 0%, #1e3a8a 100%)",
@@ -20,6 +20,16 @@ export default function SummaryReelsViewer({
   const [currentIndex, setCurrentIndex] = useState(0);
   const containerRef = useRef<HTMLElement>(null);
   const slideRefs = useRef<(HTMLElement | null)[]>([]);
+
+  const scrollTo = useCallback((index: number) => {
+    const slide = slideRefs.current[index];
+    const container = containerRef.current;
+    if (!slide || !container) return;
+    container.scrollTo({
+      top: slide.offsetTop,
+      behavior: "smooth",
+    });
+  }, []);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -55,6 +65,18 @@ export default function SummaryReelsViewer({
 
   return (
     <div className="reels-wrapper">
+      <button
+        type="button"
+        className="reels-nav-btn reels-nav-up"
+        disabled={currentIndex === 0}
+        onClick={() => scrollTo(currentIndex - 1)}
+        aria-label="前のスライド"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M18 15l-6-6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+
       <section
         ref={containerRef}
         className="reels-container"
@@ -95,6 +117,18 @@ export default function SummaryReelsViewer({
           {currentIndex + 1} / {sentences.length}
         </div>
       </section>
+
+      <button
+        type="button"
+        className="reels-nav-btn reels-nav-down"
+        disabled={currentIndex === sentences.length - 1}
+        onClick={() => scrollTo(currentIndex + 1)}
+        aria-label="次のスライド"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
     </div>
   );
 }

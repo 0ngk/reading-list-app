@@ -203,7 +203,8 @@ body {
 
 .reels-wrapper {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 .reels-container {
@@ -296,13 +297,39 @@ body {
   pointer-events: none;
 }
 
+/* Navigation buttons */
+.reels-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.08);
+  color: #475569;
+  cursor: pointer;
+  transition: background 0.2s ease, opacity 0.2s ease;
+  margin: 6px 0;
+}
+
+.reels-nav-btn:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.reels-nav-btn:disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .reels-container {
     scroll-behavior: auto;
   }
 
-  .reels-progress-segment {
+  .reels-progress-segment,
+  .reels-nav-btn {
     transition: none;
   }
 }
