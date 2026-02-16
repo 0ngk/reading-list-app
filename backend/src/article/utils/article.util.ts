@@ -1,8 +1,14 @@
-export const buildSummaryPrompt = (content: string) =>
+const buildCurrentTimeInstruction = (now: Date) =>
+  `【現在時刻】
+- ${now.toISOString()} (UTC)`;
+
+export const buildSummaryPrompt = (content: string, now: Date = new Date()) =>
   `あなたはバズりやすいショート動画台本ライターです。
 以下はWebページから抽出した全テキストコンテンツです。
 この中から記事の本文を見つけ出し、バズりやすい雑学系・紹介系ショート動画の台本を作成してください。
 ナビゲーション、メニュー、広告、フッター、サイドバー、コピーライト表示などは無視してください。
+
+${buildCurrentTimeInstruction(now)}
 
 ## 台本の構成
 
@@ -42,9 +48,14 @@ export const buildSummaryPrompt = (content: string) =>
 ${content}
 ---`;
 
-export const buildTitleAndSummaryPrompt = (content: string) =>
+export const buildTitleAndSummaryPrompt = (
+  content: string,
+  now: Date = new Date(),
+) =>
   `あなたはバズりやすいショート動画台本ライターです。
 以下のテキストから、魅力的なタイトルと台本を作成してください。
+
+${buildCurrentTimeInstruction(now)}
 
 【タイトル作成の要件】
 - 記事の内容を的確に表現する
