@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { useScrollSnap } from "@/hooks/useScrollSnap";
 import type { ItemType } from "@/types/item";
 import ReelArticle from "./ReelArticle";
-import ReelFab from "./ReelFab";
 
 type ReelFeedProps = {
   items: ItemType[];
@@ -58,7 +57,6 @@ export default function ReelFeed({ items, initialArticleId }: ReelFeedProps) {
             />
           ))}
         </div>
-        <ReelFab />
       </div>
     </div>
   );
