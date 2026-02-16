@@ -17,7 +17,7 @@ const MAX_CONTENT_LENGTH = 10000;
 
 interface AiGeneratedContent {
   title: string;
-  summary: string;
+  summary: { emoji: string; text: string }[];
 }
 
 @Injectable()
@@ -76,8 +76,23 @@ export class ArticleService {
             description: "記事のタイトル(50文字以内)",
           },
           summary: {
-            type: Type.STRING,
-            description: "バズりやすいショート動画の台本",
+            type: Type.ARRAY,
+            description: "バズりやすいショート動画の台本（文ごとに分割）",
+            items: {
+              type: Type.OBJECT,
+              properties: {
+                emoji: {
+                  type: Type.STRING,
+                  description: "文の内容を表す絵文字1つ",
+                },
+                text: {
+                  type: Type.STRING,
+                  description: "台本の1文",
+                },
+              },
+              required: ["emoji", "text"],
+              propertyOrdering: ["emoji", "text"],
+            },
           },
         },
         required: ["title", "summary"],
@@ -97,7 +112,8 @@ export class ArticleService {
         title = rawTitle.slice(0, 255); // DBの最大長
       }
 
-      aiSummary = generated.summary || AI_SUMMARY_DEFAULT;
+      aiSummary =
+        generated.summary?.length > 0 ? generated.summary : AI_SUMMARY_DEFAULT;
     } catch (error) {
       this.logger.warn(
         `AI generation failed: ${error instanceof Error ? error.message : String(error)}`,

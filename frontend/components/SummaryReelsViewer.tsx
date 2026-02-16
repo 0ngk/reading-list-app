@@ -15,7 +15,7 @@ const GRADIENTS = [
 export default function SummaryReelsViewer({
   sentences,
 }: {
-  sentences: string[];
+  sentences: { emoji: string; text: string }[];
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const containerRef = useRef<HTMLElement>(null);
@@ -87,7 +87,7 @@ export default function SummaryReelsViewer({
         <div className="reels-progress" aria-hidden="true">
           {sentences.map((_, i) => (
             <div
-              key={`progress-${sentences[i]?.slice(0, 8) ?? i}`}
+              key={`progress-${sentences[i]?.text.slice(0, 8) ?? i}`}
               className={`reels-progress-segment ${i <= currentIndex ? "active" : ""}`}
             />
           ))}
@@ -96,7 +96,7 @@ export default function SummaryReelsViewer({
         {/* Slides */}
         {sentences.map((sentence, i) => (
           <article
-            key={`slide-${sentence.slice(0, 16)}`}
+            key={`slide-${sentence.text.slice(0, 16)}`}
             ref={(el) => {
               slideRefs.current[i] = el;
             }}
@@ -108,7 +108,10 @@ export default function SummaryReelsViewer({
             aria-roledescription="slide"
             aria-label={`スライド ${i + 1} / ${sentences.length}`}
           >
-            <p className="reels-slide-text">{sentence}</p>
+            <p className="reels-slide-text">
+              <span className="reels-slide-emoji">{sentence.emoji}</span>
+              {sentence.text}
+            </p>
           </article>
         ))}
 

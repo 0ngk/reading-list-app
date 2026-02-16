@@ -76,7 +76,7 @@ export default function Item({ item }: { item: ItemType }) {
         ellipsis={{ rows: 3 }}
         style={{ color: "#475569", fontSize: 14, marginBottom: 16 }}
       >
-        {item.aiSummary}
+        {item.aiSummary.map((s) => s.text).join("")}
       </Paragraph>
 
       <div

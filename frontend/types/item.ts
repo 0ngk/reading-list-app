@@ -2,5 +2,5 @@ export type ItemType = {
   id: string;
   title: string;
   originalUrl?: string;
-  aiSummary: string;
+  aiSummary: { emoji: string; text: string }[];
 };

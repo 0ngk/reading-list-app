@@ -17,8 +17,8 @@ export class Article {
   @Column({ type: "varchar", nullable: true })
   originalUrl: string | null;
 
-  @Column({ type: "text" })
-  aiSummary: string;
+  @Column({ type: "jsonb" })
+  aiSummary: { emoji: string; text: string }[];
 
   @CreateDateColumn()
   createdAt: Date;

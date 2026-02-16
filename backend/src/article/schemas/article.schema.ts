@@ -11,7 +11,9 @@ export const articleSchema = z
     id: z.uuid(),
     title: z.string().min(1).max(255),
     originalUrl: z.url().optional(),
-    aiSummary: z.string().min(1),
+    aiSummary: z
+      .array(z.object({ emoji: z.string().min(1), text: z.string().min(1) }))
+      .min(1),
   })
   .strict();
 
