@@ -1,3 +1,4 @@
+import { Type } from "@google/genai";
 import { Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { LlmService } from "src/llm/llm.service";
@@ -10,9 +11,14 @@ import type {
   CreateArticleResponseDto,
   GetArticlesResponseDto,
 } from "./schemas/article.schema";
-import { buildSummaryPrompt } from "./utils/article.util";
+import { buildTitleAndSummaryPrompt } from "./utils/article.util";
 
 const MAX_CONTENT_LENGTH = 10000;
+
+interface AiGeneratedContent {
+  title: string;
+  summary: string;
+}
 
 @Injectable()
 export class ArticleService {
@@ -52,7 +58,7 @@ export class ArticleService {
   async createArticle(
     dto: CreateArticleDto,
   ): Promise<CreateArticleResponseDto> {
-    const title = this.extractTitle(dto.text);
+    let title = "無題の記事"; // デフォルトのタイトル
     let aiSummary = AI_SUMMARY_DEFAULT;
 
     try {
@@ -60,14 +66,43 @@ export class ArticleService {
       this.logger.debug(
         `Input text length: ${dto.text.length} characters (truncated to ${truncatedText.length})`,
       );
-      const llmResponse = await this.llmService.generateText({
-        prompt: buildSummaryPrompt(truncatedText),
-      });
-      aiSummary = llmResponse.text;
+
+      // レスポンススキーマを定義
+      const responseSchema = {
+        type: Type.OBJECT,
+        properties: {
+          title: {
+            type: Type.STRING,
+            description: "記事のタイトル(50文字以内)",
+          },
+          summary: {
+            type: Type.STRING,
+            description: "バズりやすいショート動画の台本",
+          },
+        },
+        required: ["title", "summary"],
+        propertyOrdering: ["title", "summary"],
+      };
+
+      // タイトルとサマリーを1回のAPI呼び出しで生成
+      const generated =
+        await this.llmService.generateStructuredText<AiGeneratedContent>(
+          buildTitleAndSummaryPrompt(truncatedText),
+          responseSchema,
+        );
+
+      // タイトルの検証と切り詰め（DB制約: 1-255文字）
+      const rawTitle = generated.title?.trim() || "";
+      if (rawTitle.length > 0) {
+        title = rawTitle.slice(0, 255); // DBの最大長
+      }
+
+      aiSummary = generated.summary || AI_SUMMARY_DEFAULT;
     } catch (error) {
       this.logger.warn(
-        `AI summary generation failed: ${error instanceof Error ? error.message : String(error)}`,
+        `AI generation failed: ${error instanceof Error ? error.message : String(error)}`,
       );
+      // title と aiSummary は既にデフォルト値が設定されている
     }
 
     const article = this.articleRepository.create({
@@ -83,13 +118,5 @@ export class ArticleService {
       originalUrl: saved.originalUrl ?? undefined,
       aiSummary: saved.aiSummary,
     };
-  }
-
-  private extractTitle(text: string): string {
-    // biome-ignore lint/suspicious/noControlCharactersInRegex: intentional control character removal
-    const cleaned = text.replace(/[\x00-\x1f]/g, " ").trim();
-    const firstLine = cleaned.split("\n")[0]?.trim() ?? "";
-    const raw = firstLine.length > 0 ? firstLine : cleaned;
-    return raw.slice(0, 50).trim() || "Untitled";
   }
 }

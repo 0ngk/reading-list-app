@@ -9,4 +9,11 @@ export class LlmService {
   async generateText(dto: GenerateTextDto): Promise<GenerateTextResponseDto> {
     return { text: await this.client.generateText(dto.prompt) };
   }
+
+  async generateStructuredText<T>(
+    prompt: string,
+    responseSchema: unknown,
+  ): Promise<T> {
+    return this.client.generateStructuredText<T>(prompt, responseSchema);
+  }
 }
