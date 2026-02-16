@@ -196,3 +196,113 @@ body {
     border-top-color: rgba(71, 85, 105, 0.6);
   }
 }
+
+/* ========================================
+   Summary Reels Viewer
+   ======================================== */
+
+.reels-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.reels-container {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  aspect-ratio: 9 / 16;
+  border-radius: 16px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  outline: none;
+  -webkit-overflow-scrolling: touch;
+  /* Hide scrollbar */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.reels-container::-webkit-scrollbar {
+  display: none;
+}
+
+.reels-container:focus-visible {
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.4);
+}
+
+.reels-slide {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  scroll-snap-align: start;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 28px;
+  box-sizing: border-box;
+}
+
+.reels-slide-text {
+  color: #ffffff;
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.7;
+  text-align: center;
+  margin: 0;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  word-break: auto-phrase;
+  overflow-wrap: anywhere;
+}
+
+/* Progress bar */
+.reels-progress {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  gap: 4px;
+  padding: 12px 12px 0;
+  pointer-events: none;
+}
+
+.reels-progress-segment {
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.3);
+  transition: background 0.3s ease;
+}
+
+.reels-progress-segment.active {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+/* Slide counter */
+.reels-counter {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  text-align: center;
+  padding: 0 0 14px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .reels-container {
+    scroll-behavior: auto;
+  }
+
+  .reels-progress-segment {
+    transition: none;
+  }
+}

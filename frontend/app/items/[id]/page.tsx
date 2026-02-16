@@ -9,7 +9,8 @@ import {
 import { Button, Card, Divider, Space } from "antd";
 import { notFound } from "next/navigation";
 import BackButton from "@/components/BackButton";
-import { Paragraph, Title } from "@/components/Typography";
+import SummaryReelsViewer from "@/components/SummaryReelsViewer";
+import { Title } from "@/components/Typography";
 import { ApiError } from "@/lib/api-error";
 import { fetchItemById } from "@/lib/fetch";
 
@@ -21,30 +22,45 @@ const OPENING_TO_CLOSING_QUOTES = new Map<string, string>([
   ["“", "”"],
 ]);
 
-const formatSummaryWithLineBreaks = (summary: string) =>
-  Array.from(summary)
-    .reduce<{ text: string; quoteStack: string[] }>(
-      (state, char) => {
-        const closingQuote = OPENING_TO_CLOSING_QUOTES.get(char);
-        const nextQuoteStack = closingQuote
-          ? char === '"' && state.quoteStack.at(-1) === closingQuote
-            ? state.quoteStack.slice(0, -1)
-            : [...state.quoteStack, closingQuote]
-          : state.quoteStack.at(-1) === char
-            ? state.quoteStack.slice(0, -1)
-            : state.quoteStack;
+const splitSummaryIntoSentences = (summary: string): string[] => {
+  const { sentences, current } = Array.from(summary).reduce<{
+    sentences: string[];
+    current: string;
+    quoteStack: string[];
+  }>(
+    (state, char) => {
+      const closingQuote = OPENING_TO_CLOSING_QUOTES.get(char);
+      const nextQuoteStack = closingQuote
+        ? char === '"' && state.quoteStack.at(-1) === closingQuote
+          ? state.quoteStack.slice(0, -1)
+          : [...state.quoteStack, closingQuote]
+        : state.quoteStack.at(-1) === char
+          ? state.quoteStack.slice(0, -1)
+          : state.quoteStack;
 
-        const shouldInsertLineBreak =
-          SENTENCE_DELIMITERS.has(char) && nextQuoteStack.length === 0;
+      const shouldSplit =
+        SENTENCE_DELIMITERS.has(char) && nextQuoteStack.length === 0;
 
-        return {
-          text: `${state.text}${char}${shouldInsertLineBreak ? "\n" : ""}`,
-          quoteStack: nextQuoteStack,
-        };
-      },
-      { text: "", quoteStack: [] },
-    )
-    .text.trim();
+      const updatedCurrent = state.current + char;
+
+      return shouldSplit
+        ? {
+            sentences: [...state.sentences, updatedCurrent.trim()],
+            current: "",
+            quoteStack: nextQuoteStack,
+          }
+        : {
+            sentences: state.sentences,
+            current: updatedCurrent,
+            quoteStack: nextQuoteStack,
+          };
+    },
+    { sentences: [], current: "", quoteStack: [] },
+  );
+
+  const trimmed = current.trim();
+  return trimmed ? [...sentences, trimmed] : sentences;
+};
 
 export default async function Item({
   params,
@@ -61,7 +77,7 @@ export default async function Item({
     }
     throw error;
   }
-  const formattedSummary = formatSummaryWithLineBreaks(item.aiSummary);
+  const sentences = splitSummaryIntoSentences(item.aiSummary);
 
   return (
     <main style={{ minHeight: "100vh", backgroundColor: "#f8fafc" }}>
@@ -184,16 +200,7 @@ export default async function Item({
                 AI Summary
               </Title>
             </div>
-            <Paragraph
-              style={{
-                color: "#1e293b",
-                fontSize: 16,
-                margin: 0,
-                whiteSpace: "pre-line",
-              }}
-            >
-              {formattedSummary}
-            </Paragraph>
+            <SummaryReelsViewer sentences={sentences} />
           </div>
         </Card>
       </div>
