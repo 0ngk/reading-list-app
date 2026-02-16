@@ -13,6 +13,39 @@ import { Paragraph, Title } from "@/components/Typography";
 import { ApiError } from "@/lib/api-error";
 import { fetchItemById } from "@/lib/fetch";
 
+const SENTENCE_DELIMITERS = new Set(["。", "？", "！", "?", "!"]);
+const OPENING_TO_CLOSING_QUOTES = new Map<string, string>([
+  ["「", "」"],
+  ["『", "』"],
+  ['"', '"'],
+  ["“", "”"],
+]);
+
+const formatSummaryWithLineBreaks = (summary: string) =>
+  Array.from(summary)
+    .reduce<{ text: string; quoteStack: string[] }>(
+      (state, char) => {
+        const closingQuote = OPENING_TO_CLOSING_QUOTES.get(char);
+        const nextQuoteStack = closingQuote
+          ? char === '"' && state.quoteStack.at(-1) === closingQuote
+            ? state.quoteStack.slice(0, -1)
+            : [...state.quoteStack, closingQuote]
+          : state.quoteStack.at(-1) === char
+            ? state.quoteStack.slice(0, -1)
+            : state.quoteStack;
+
+        const shouldInsertLineBreak =
+          SENTENCE_DELIMITERS.has(char) && nextQuoteStack.length === 0;
+
+        return {
+          text: `${state.text}${char}${shouldInsertLineBreak ? "\n" : ""}`,
+          quoteStack: nextQuoteStack,
+        };
+      },
+      { text: "", quoteStack: [] },
+    )
+    .text.trim();
+
 export default async function Item({
   params,
 }: {
@@ -28,6 +61,8 @@ export default async function Item({
     }
     throw error;
   }
+  const formattedSummary = formatSummaryWithLineBreaks(item.aiSummary);
+
   return (
     <main style={{ minHeight: "100vh", backgroundColor: "#f8fafc" }}>
       <div
@@ -149,8 +184,15 @@ export default async function Item({
                 AI Summary
               </Title>
             </div>
-            <Paragraph style={{ color: "#1e293b", fontSize: 16, margin: 0 }}>
-              {item.aiSummary}
+            <Paragraph
+              style={{
+                color: "#1e293b",
+                fontSize: 16,
+                margin: 0,
+                whiteSpace: "pre-line",
+              }}
+            >
+              {formattedSummary}
             </Paragraph>
           </div>
         </Card>
