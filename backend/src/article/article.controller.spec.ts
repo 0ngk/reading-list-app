@@ -18,9 +18,11 @@ describe("ArticleController", () => {
           useValue: {
             find: jest.fn().mockResolvedValue([]),
             create: jest.fn().mockImplementation((dto) => dto),
-            save: jest.fn().mockImplementation((entity) =>
-              Promise.resolve({ id: "test-uuid", ...entity }),
-            ),
+            save: jest
+              .fn()
+              .mockImplementation((entity) =>
+                Promise.resolve({ id: "test-uuid", ...entity }),
+              ),
           },
         },
         {
