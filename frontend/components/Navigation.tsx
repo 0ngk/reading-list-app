@@ -25,7 +25,7 @@ export default function Navigation() {
         }}
       >
         <Link
-          href="/dashboard"
+          href="/feed"
           style={{
             fontSize: "24px",
             fontWeight: 700,

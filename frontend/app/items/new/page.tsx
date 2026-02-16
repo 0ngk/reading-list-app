@@ -15,7 +15,7 @@ export default async function NewItemPage() {
       >
         {/* 戻るリンク */}
         <div style={{ marginBottom: 24 }}>
-          <BackButton variant="default" label="ダッシュボードに戻る" />
+          <BackButton variant="default" label="フィードに戻る" />
         </div>
 
         {/* ページタイトル */}

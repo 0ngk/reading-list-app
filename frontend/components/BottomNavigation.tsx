@@ -9,10 +9,10 @@ export default function BottomNavigation() {
 
   const navItems = [
     {
-      href: "/dashboard",
+      href: "/feed",
       icon: HomeOutlined,
       label: "ホーム",
-      isActive: pathname === "/dashboard",
+      isActive: pathname === "/feed",
     },
     {
       href: "/items/new",

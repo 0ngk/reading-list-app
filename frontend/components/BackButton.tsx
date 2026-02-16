@@ -16,7 +16,7 @@ interface BackButtonProps {
 }
 
 export default function BackButton({
-  href = "/dashboard",
+  href = "/feed",
   label = "戻る",
   variant = "default",
   disabled = false,
