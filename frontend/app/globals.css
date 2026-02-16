@@ -316,7 +316,9 @@ body {
   background: rgba(0, 0, 0, 0.08);
   color: #475569;
   cursor: pointer;
-  transition: background 0.2s ease, opacity 0.2s ease;
+  transition:
+    background 0.2s ease,
+    opacity 0.2s ease;
   margin: 6px 0;
 }
 
@@ -337,6 +339,332 @@ body {
 
   .reels-progress-segment,
   .reels-nav-btn {
+    transition: none;
+  }
+}
+
+/* ========================================
+   Reel Feed - Full-screen Vertical Feed
+   ======================================== */
+
+/* フィードページではbodyのpaddingを無効化 */
+body.feed-active {
+  padding-bottom: 0 !important;
+  overflow: hidden;
+  background-color: #000;
+}
+
+body.feed-active .top-navigation,
+body.feed-active .bottom-navigation {
+  display: none !important;
+}
+
+/* 縦スクロール: 記事間移動 */
+.reel-feed {
+  height: 100dvh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+  overscroll-behavior-y: contain;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.reel-feed::-webkit-scrollbar {
+  display: none;
+}
+
+/* 1記事分のコンテナ (100dvh) */
+.reel-article {
+  position: relative;
+  height: 100dvh;
+  scroll-snap-align: start;
+  overflow: hidden;
+}
+
+/* 横スクロール: スライド間移動 */
+.reel-slides {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.reel-slides::-webkit-scrollbar {
+  display: none;
+}
+
+/* 個別スライド (フルスクリーン) */
+.reel-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 32px 160px;
+  box-sizing: border-box;
+  scroll-snap-align: start;
+}
+
+.reel-slide-text {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.7;
+  text-align: center;
+  margin: 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  word-break: auto-phrase;
+  overflow-wrap: anywhere;
+}
+
+.reel-slide-emoji {
+  display: block;
+  font-size: 48px;
+  margin-bottom: 20px;
+  text-shadow: none;
+}
+
+/* ========================================
+   Reel Progress Bar (Stories風)
+   ======================================== */
+
+.reel-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 30;
+  display: flex;
+  gap: 4px;
+  padding: calc(12px + env(safe-area-inset-top)) 12px 0;
+  pointer-events: none;
+}
+
+.reel-progress-segment {
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.3);
+  transition: background 0.3s ease;
+}
+
+.reel-progress-segment.active {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+/* ========================================
+   Reel Overlay (記事メタデータ)
+   ======================================== */
+
+.reel-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  padding: 0 16px;
+  padding-bottom: calc(24px + env(safe-area-inset-bottom));
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+  cursor: pointer;
+  transition: padding 0.3s ease;
+}
+
+button.reel-overlay-glass {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 16px;
+  border: none;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.reel-overlay.expanded .reel-overlay-glass {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 16px;
+}
+
+.reel-overlay-title {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.reel-overlay.expanded .reel-overlay-title {
+  -webkit-line-clamp: unset;
+}
+
+.reel-overlay-details {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.reel-overlay-url {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 13px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s ease;
+}
+
+.reel-overlay-url:hover {
+  color: #ffffff;
+}
+
+.reel-overlay-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.reel-action-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: none;
+  color: #ffffff;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.reel-action-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* ========================================
+   Reel FAB (記事追加ボタン)
+   ======================================== */
+
+.reel-fab {
+  position: fixed;
+  bottom: calc(24px + env(safe-area-inset-bottom));
+  right: 20px;
+  z-index: 50;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #f97316;
+  color: #ffffff;
+  border: none;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(249, 115, 22, 0.4);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.reel-fab:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 24px rgba(249, 115, 22, 0.5);
+}
+
+.reel-fab:active {
+  transform: scale(0.95);
+}
+
+/* ========================================
+   Desktop Reel Frame
+   ======================================== */
+
+@media (min-width: 768px) {
+  .desktop-reel-frame {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100dvh;
+    background: #0f172a;
+  }
+
+  .desktop-reel-phone {
+    width: 390px;
+    height: min(844px, calc(100dvh - 48px));
+    border-radius: 40px;
+    overflow: hidden;
+    box-shadow:
+      0 0 0 8px #1e293b,
+      0 25px 50px rgba(0, 0, 0, 0.5);
+    position: relative;
+  }
+
+  /* デスクトップフレーム内ではsafe-area-insetをリセット */
+  .desktop-reel-phone .reel-progress {
+    padding-top: 12px;
+  }
+
+  .desktop-reel-phone .reel-overlay {
+    padding-bottom: 24px;
+  }
+
+  .desktop-reel-phone .reel-fab {
+    bottom: 24px;
+  }
+
+  .desktop-reel-phone .reel-slide {
+    padding: 60px 32px 140px;
+  }
+}
+
+/* モバイルではフレームなし */
+@media (max-width: 767px) {
+  .desktop-reel-frame {
+    height: 100dvh;
+  }
+
+  .desktop-reel-phone {
+    height: 100%;
+  }
+}
+
+/* ========================================
+   Reel Feed - Reduced Motion
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .reel-feed,
+  .reel-slides {
+    scroll-behavior: auto;
+  }
+
+  .reel-overlay-glass,
+  .reel-action-btn,
+  .reel-fab,
+  .reel-progress-segment {
     transition: none;
   }
 }
