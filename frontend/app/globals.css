@@ -201,21 +201,20 @@ body {
    Reel Feed - Full-screen Vertical Feed
    ======================================== */
 
-/* フィードページではbodyのpaddingを無効化 */
+/* フィードページでのbody設定 */
 body.feed-active {
-  padding-bottom: 0 !important;
   overflow: hidden;
   background-color: #000;
+  padding-bottom: 0 !important; /* フィードページではpaddingは不要（.reel-feedで高さ調整済み） */
 }
 
-body.feed-active .top-navigation,
-body.feed-active .bottom-navigation {
+body.feed-active .top-navigation {
   display: none !important;
 }
 
 /* 縦スクロール: 記事間移動 */
 .reel-feed {
-  height: 100dvh;
+  height: calc(100dvh - 76px - env(safe-area-inset-bottom));
   overflow-y: auto;
   overflow-x: hidden;
   scroll-snap-type: y mandatory;
@@ -226,16 +225,30 @@ body.feed-active .bottom-navigation {
   -webkit-overflow-scrolling: touch;
 }
 
+/* デスクトップではボトムナビがないので100dvh */
+@media (min-width: 768px) {
+  .reel-feed {
+    height: 100dvh;
+  }
+}
+
 .reel-feed::-webkit-scrollbar {
   display: none;
 }
 
-/* 1記事分のコンテナ (100dvh) */
+/* 1記事分のコンテナ */
 .reel-article {
   position: relative;
-  height: 100dvh;
+  height: calc(100dvh - 76px - env(safe-area-inset-bottom));
   scroll-snap-align: start;
   overflow: hidden;
+}
+
+/* デスクトップでは100dvh */
+@media (min-width: 768px) {
+  .reel-article {
+    height: 100dvh;
+  }
 }
 
 /* 横スクロール: スライド間移動 */
