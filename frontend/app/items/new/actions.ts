@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { config } from "@/lib/config";
 
 // フォーム状態の型定義
 export interface CreateItemState {
@@ -66,7 +67,7 @@ export async function createItemAction(
   }
 
   // バックエンドAPIへのリクエスト
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+  const apiUrl = config.apiUrl;
   let shouldRedirect = false;
 
   try {
