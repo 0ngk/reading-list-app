@@ -3,7 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { ConfigProvider } from "antd";
-import BottomNavigation from "@/components/BottomNavigation";
+import BottomNavigation from "@/components/navigations/BottomNavigation";
 import { theme } from "@/lib/antd-theme";
 
 const plusJakartaSans = Plus_Jakarta_Sans({

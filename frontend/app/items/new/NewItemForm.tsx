@@ -7,7 +7,7 @@ import {
 } from "@ant-design/icons";
 import { Button, Form, Space } from "antd";
 import { useActionState, useEffect } from "react";
-import BackButton from "@/components/BackButton";
+import BackButton from "@/components/buttons/BackButton";
 import { createItemAction } from "./actions";
 
 interface FormData {
