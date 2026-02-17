@@ -139,9 +139,9 @@ export async function createItemAction(
   // 成功時の処理（try/catch の外）
   if (shouldRedirect) {
     // キャッシュをクリア
-    revalidatePath("/dashboard");
+    revalidatePath("/feed");
     // リダイレクト（NEXT_REDIRECT エラーを投げる）
-    redirect("/dashboard");
+    redirect("/feed");
   }
 
   // この行には到達しないが、TypeScript のために必要
