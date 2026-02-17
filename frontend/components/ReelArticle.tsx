@@ -1,8 +1,8 @@
 "use client";
 
+import { useRef } from "react";
 import { useScrollSnap } from "@/hooks/useScrollSnap";
 import type { ItemType } from "@/types/item";
-import { useRef } from "react";
 import ReelOverlay from "./ReelOverlay";
 import ReelProgress from "./ReelProgress";
 import ReelSlide from "./ReelSlide";
@@ -48,8 +48,7 @@ export default function ReelArticle({
       if (currentIndex > 0) scrollTo(currentIndex - 1);
     } else {
       // 右半分: 次のスライドへ
-      if (currentIndex < item.aiSummary.length - 1)
-        scrollTo(currentIndex + 1);
+      if (currentIndex < item.aiSummary.length - 1) scrollTo(currentIndex + 1);
     }
   };
 
