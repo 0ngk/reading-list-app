@@ -392,23 +392,41 @@ body.feed-active .top-navigation {
   font-weight: 600;
   line-height: 1.4;
   margin: 0;
+  overflow: hidden;
+}
+
+.reel-overlay-title-mask {
+  display: block;
   max-width: 100%;
-  white-space: normal;
-  overflow-wrap: anywhere;
-  word-break: break-word;
+  overflow: hidden;
+}
+
+.reel-overlay-title-text {
+  display: inline-block;
+  max-width: 100%;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.reel-overlay-title-text.is-marquee {
+  animation: reel-title-marquee var(--title-marquee-duration, 8s) linear
+    infinite;
+  animation-delay: 0.8s;
+}
+
+@keyframes reel-title-marquee {
+  0%,
+  10% {
+    transform: translateX(0);
+  }
+  90%,
+  100% {
+    transform: translateX(calc(var(--title-marquee-distance, 0px) * -1));
+  }
 }
 
 .reel-overlay.expanded .reel-overlay-title {
   display: block;
-}
-
-@media (max-width: 767px) {
-  .reel-overlay.compact .reel-overlay-title {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
 }
 
 .reel-overlay-details {
@@ -565,8 +583,10 @@ body.feed-active .top-navigation {
   .reel-overlay-glass,
   .reel-action-btn,
   .reel-fab,
-  .reel-progress-segment {
+  .reel-progress-segment,
+  .reel-overlay-title-text.is-marquee {
     transition: none;
+    animation: none;
   }
 }
 

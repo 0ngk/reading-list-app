@@ -5,7 +5,7 @@ import {
   LinkOutlined,
   ShareAltOutlined,
 } from "@ant-design/icons";
-import { useState } from "react";
+import { type CSSProperties, useEffect, useRef, useState } from "react";
 import type { ItemType } from "@/types/item";
 
 type ReelOverlayProps = {
@@ -14,7 +14,47 @@ type ReelOverlayProps = {
 
 export default function ReelOverlay({ item }: ReelOverlayProps) {
   const [expanded, setExpanded] = useState(false);
+  const [titleMarquee, setTitleMarquee] = useState({
+    enabled: false,
+    distance: 0,
+    duration: 0,
+  });
+  const titleMaskRef = useRef<HTMLSpanElement>(null);
+  const titleTextRef = useRef<HTMLSpanElement>(null);
   const toggleExpanded = () => setExpanded((prev) => !prev);
+
+  useEffect(() => {
+    const updateMarquee = () => {
+      const maskEl = titleMaskRef.current;
+      const textEl = titleTextRef.current;
+      if (!maskEl || !textEl) return;
+
+      const overflow = textEl.scrollWidth > maskEl.clientWidth + 1;
+      if (!overflow) {
+        setTitleMarquee({ enabled: false, distance: 0, duration: 0 });
+        return;
+      }
+
+      const distance = textEl.scrollWidth - maskEl.clientWidth;
+      const duration = Math.max(6, distance / 30);
+      setTitleMarquee({
+        enabled: true,
+        distance,
+        duration,
+      });
+    };
+
+    updateMarquee();
+    const resizeObserver = new ResizeObserver(updateMarquee);
+    if (titleMaskRef.current) resizeObserver.observe(titleMaskRef.current);
+    if (titleTextRef.current) resizeObserver.observe(titleTextRef.current);
+    window.addEventListener("resize", updateMarquee);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", updateMarquee);
+    };
+  }, []);
 
   return (
     <div className={`reel-overlay ${expanded ? "expanded" : "compact"}`}>
@@ -29,7 +69,26 @@ export default function ReelOverlay({ item }: ReelOverlayProps) {
           aria-expanded={expanded}
           aria-label="記事情報を表示"
         >
-          <h3 className="reel-overlay-title">{item.title}</h3>
+          <h3 className="reel-overlay-title">
+            <span ref={titleMaskRef} className="reel-overlay-title-mask">
+              <span
+                ref={titleTextRef}
+                className={`reel-overlay-title-text ${
+                  titleMarquee.enabled ? "is-marquee" : ""
+                }`}
+                style={
+                  titleMarquee.enabled
+                    ? ({
+                        "--title-marquee-distance": `${titleMarquee.distance}px`,
+                        "--title-marquee-duration": `${titleMarquee.duration}s`,
+                      } as CSSProperties)
+                    : undefined
+                }
+              >
+                {item.title}
+              </span>
+            </span>
+          </h3>
         </button>
 
         {expanded && (
