@@ -5,7 +5,7 @@ import {
   InfoCircleOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
-import { Alert, Button, Form, Input, Space } from "antd";
+import { Button, Form, Space } from "antd";
 import { useActionState, useEffect } from "react";
 import BackButton from "@/components/BackButton";
 import { createItemAction } from "./actions";
@@ -52,6 +52,7 @@ export default function NewItemForm() {
       layout="vertical"
       onFinish={handleFinish}
       requiredMark="optional"
+      className="new-item-form"
     >
       {/* テキスト */}
       <Form.Item
@@ -59,10 +60,11 @@ export default function NewItemForm() {
         name="text"
         rules={[{ required: true, message: "テキストを入力してください" }]}
       >
-        <Input.TextArea
-          rows={10}
+        <textarea
+          rows={8}
           placeholder="記事の内容を入力してください"
           disabled={isPending}
+          className="new-item-textarea"
         />
       </Form.Item>
 
@@ -72,30 +74,25 @@ export default function NewItemForm() {
         name="originalUrl"
         rules={[{ type: "url", message: "有効なURLを入力してください" }]}
       >
-        <Input
+        <input
           type="url"
           placeholder="https://example.com/article"
           disabled={isPending}
+          className="new-item-input"
         />
       </Form.Item>
 
       {/* AI要約の注意書き */}
-      <Alert
-        description="タイトルとAI要約はテキストの内容から自動生成されます"
-        type="info"
-        icon={<InfoCircleOutlined />}
-        showIcon
-        style={{ marginBottom: 24 }}
-      />
+      <div className="new-item-info">
+        <InfoCircleOutlined style={{ fontSize: 16, flexShrink: 0 }} />
+        <span>タイトルとAI要約はテキストの内容から自動生成されます</span>
+      </div>
 
       {/* 送信エラー */}
       {state?.errors?._form && (
-        <Alert
-          description={state.errors._form[0]}
-          type="error"
-          showIcon
-          style={{ marginBottom: 24 }}
-        />
+        <div className="new-item-error">
+          <span>{state.errors._form[0]}</span>
+        </div>
       )}
 
       {/* ボタン */}
@@ -106,6 +103,7 @@ export default function NewItemForm() {
             label="キャンセル"
             disabled={isPending}
             icon={<CloseOutlined />}
+            className="new-item-btn-cancel"
           />
           <Button
             type="primary"
