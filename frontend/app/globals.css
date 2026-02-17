@@ -365,6 +365,7 @@ body.feed-active .top-navigation {
 .reel-overlay-trigger {
   display: block;
   width: 100%;
+  min-width: 0;
   padding: 0;
   margin: 0;
   border: none;
@@ -391,14 +392,23 @@ body.feed-active .top-navigation {
   font-weight: 600;
   line-height: 1.4;
   margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .reel-overlay.expanded .reel-overlay-title {
-  -webkit-line-clamp: unset;
+  display: block;
+}
+
+@media (max-width: 767px) {
+  .reel-overlay.compact .reel-overlay-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 }
 
 .reel-overlay-details {
@@ -505,6 +515,12 @@ body.feed-active .top-navigation {
       0 0 0 8px #1e293b,
       0 25px 50px rgba(0, 0, 0, 0.5);
     position: relative;
+  }
+
+  /* フレーム内ではビューポート固定高さではなく親要素高に合わせる */
+  .desktop-reel-phone .reel-feed,
+  .desktop-reel-phone .reel-article {
+    height: 100%;
   }
 
   /* デスクトップフレーム内ではsafe-area-insetをリセット */
