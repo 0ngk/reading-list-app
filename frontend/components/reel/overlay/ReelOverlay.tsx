@@ -5,8 +5,9 @@ import {
   LinkOutlined,
   ShareAltOutlined,
 } from "@ant-design/icons";
-import { type CSSProperties, useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import type { ItemType } from "@/types/item";
+import { useTitleMarquee } from "../hooks/useTitleMarquee";
 
 type ReelOverlayProps = {
   item: ItemType;
@@ -20,66 +21,12 @@ export default function ReelOverlay({
   slideIndex,
 }: ReelOverlayProps) {
   const [expanded, setExpanded] = useState(false);
-  const [titleMarquee, setTitleMarquee] = useState({
-    enabled: false,
-    distance: 0,
-    duration: 0,
-  });
-  const titleMaskRef = useRef<HTMLSpanElement>(null);
-  const titleTextRef = useRef<HTMLSpanElement>(null);
-  const toggleExpanded = () => setExpanded((prev) => !prev);
-
-  useEffect(() => {
-    const updateMarquee = () => {
-      const maskEl = titleMaskRef.current;
-      const textEl = titleTextRef.current;
-      if (!maskEl || !textEl) return;
-
-      const overflow = textEl.scrollWidth > maskEl.clientWidth + 1;
-      if (!overflow) {
-        setTitleMarquee({ enabled: false, distance: 0, duration: 0 });
-        return;
-      }
-
-      const distance = textEl.scrollWidth - maskEl.clientWidth;
-      const duration = Math.max(6, distance / 30);
-      setTitleMarquee({
-        enabled: true,
-        distance,
-        duration,
-      });
-    };
-
-    updateMarquee();
-    const resizeObserver = new ResizeObserver(updateMarquee);
-    if (titleMaskRef.current) resizeObserver.observe(titleMaskRef.current);
-    if (titleTextRef.current) resizeObserver.observe(titleTextRef.current);
-    window.addEventListener("resize", updateMarquee);
-
-    return () => {
-      resizeObserver.disconnect();
-      window.removeEventListener("resize", updateMarquee);
-    };
-  }, []);
-
-  useEffect(() => {
-    const textEl = titleTextRef.current;
-    if (!textEl) return;
-    if (slideIndex < 0) return;
-
-    // フォーカス移動時にタイトル位置を先頭へ戻す
-    textEl.style.animation = "none";
-    textEl.style.transform = "translateX(0)";
-
-    if (!isFocused || !titleMarquee.enabled) return;
-
-    const rafId = requestAnimationFrame(() => {
-      textEl.style.animation = "";
-      textEl.style.transform = "";
+  const { titleMaskRef, titleTextRef, isMarquee, marqueeStyle } =
+    useTitleMarquee({
+      isFocused,
+      slideIndex,
     });
-
-    return () => cancelAnimationFrame(rafId);
-  }, [isFocused, slideIndex, titleMarquee.enabled]);
+  const toggleExpanded = () => setExpanded((prev) => !prev);
 
   return (
     <div className={`reel-overlay ${expanded ? "expanded" : "compact"}`}>
@@ -99,16 +46,9 @@ export default function ReelOverlay({
               <span
                 ref={titleTextRef}
                 className={`reel-overlay-title-text ${
-                  titleMarquee.enabled ? "is-marquee" : ""
+                  isMarquee ? "is-marquee" : ""
                 }`}
-                style={
-                  titleMarquee.enabled
-                    ? ({
-                        "--title-marquee-distance": `${titleMarquee.distance}px`,
-                        "--title-marquee-duration": `${titleMarquee.duration}s`,
-                      } as CSSProperties)
-                    : undefined
-                }
+                style={marqueeStyle}
               >
                 {item.title}
               </span>

@@ -1,4 +1,4 @@
-import { SLIDE_GRADIENTS } from "@/lib/constants/gradients";
+import { SLIDE_GRADIENTS } from "../model/constants";
 
 type ReelSlideProps = {
   emoji: string;

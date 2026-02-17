@@ -1,4 +1,4 @@
-import ReelFeed from "@/components/reel/ReelFeed";
+import { ReelFeed } from "@/components/reel";
 import { fetchArticles } from "@/lib/fetch";
 import type { ItemType } from "@/types/item";
 

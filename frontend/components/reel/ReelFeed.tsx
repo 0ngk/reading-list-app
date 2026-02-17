@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useScrollSnap } from "@/hooks/useScrollSnap";
 import type { ItemType } from "@/types/item";
-import ReelArticle from "./ReelArticle";
+import ReelArticle from "./article/ReelArticle";
 
 type ReelFeedProps = {
   items: ItemType[];
