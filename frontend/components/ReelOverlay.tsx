@@ -14,20 +14,23 @@ type ReelOverlayProps = {
 
 export default function ReelOverlay({ item }: ReelOverlayProps) {
   const [expanded, setExpanded] = useState(false);
+  const toggleExpanded = () => setExpanded((prev) => !prev);
 
   return (
     <div className={`reel-overlay ${expanded ? "expanded" : "compact"}`}>
-      <button
-        type="button"
-        className="reel-overlay-glass"
-        onClick={() => setExpanded((prev) => !prev)}
-        onKeyDown={(e) => {
-          if (e.key === "Escape") setExpanded(false);
-        }}
-        aria-expanded={expanded}
-        aria-label="記事情報を表示"
-      >
-        <h3 className="reel-overlay-title">{item.title}</h3>
+      <div className="reel-overlay-glass">
+        <button
+          type="button"
+          className="reel-overlay-trigger"
+          onClick={toggleExpanded}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") setExpanded(false);
+          }}
+          aria-expanded={expanded}
+          aria-label="記事情報を表示"
+        >
+          <h3 className="reel-overlay-title">{item.title}</h3>
+        </button>
 
         {expanded && (
           <div className="reel-overlay-details">
@@ -64,7 +67,7 @@ export default function ReelOverlay({ item }: ReelOverlayProps) {
             </div>
           </div>
         )}
-      </button>
+      </div>
     </div>
   );
 }
