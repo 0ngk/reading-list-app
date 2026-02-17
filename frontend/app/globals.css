@@ -256,6 +256,7 @@ body.feed-active .top-navigation {
   display: flex;
   width: 100%;
   height: 100%;
+  cursor: pointer;
   overflow-x: auto;
   overflow-y: hidden;
   scroll-snap-type: x mandatory;

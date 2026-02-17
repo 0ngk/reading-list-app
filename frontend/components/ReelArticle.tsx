@@ -2,6 +2,7 @@
 
 import { useScrollSnap } from "@/hooks/useScrollSnap";
 import type { ItemType } from "@/types/item";
+import { useRef } from "react";
 import ReelOverlay from "./ReelOverlay";
 import ReelProgress from "./ReelProgress";
 import ReelSlide from "./ReelSlide";
@@ -19,10 +20,38 @@ export default function ReelArticle({
   isFocused,
   setRef,
 }: ReelArticleProps) {
-  const { currentIndex, containerRef, setItemRef } = useScrollSnap(
+  const { currentIndex, scrollTo, containerRef, setItemRef } = useScrollSnap(
     item.aiSummary.length,
     { direction: "horizontal" },
   );
+  const pointerDownPos = useRef<{ x: number; y: number } | null>(null);
+
+  const handlePointerDown = (e: React.PointerEvent<HTMLElement>) => {
+    pointerDownPos.current = { x: e.clientX, y: e.clientY };
+  };
+
+  const handlePointerUp = (e: React.PointerEvent<HTMLElement>) => {
+    if (!pointerDownPos.current) return;
+    const dx = e.clientX - pointerDownPos.current.x;
+    const dy = e.clientY - pointerDownPos.current.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    pointerDownPos.current = null;
+
+    // スワイプやドラッグの場合は無視（10px以上の移動）
+    if (distance > 10) return;
+
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+
+    if (clickX < rect.width / 2) {
+      // 左半分: 前のスライドへ
+      if (currentIndex > 0) scrollTo(currentIndex - 1);
+    } else {
+      // 右半分: 次のスライドへ
+      if (currentIndex < item.aiSummary.length - 1)
+        scrollTo(currentIndex + 1);
+    }
+  };
 
   return (
     <section
@@ -36,6 +65,8 @@ export default function ReelArticle({
         className="reel-slides"
         aria-roledescription="carousel"
         aria-label={`AI要約: 全${item.aiSummary.length}枚`}
+        onPointerDown={handlePointerDown}
+        onPointerUp={handlePointerUp}
       >
         {item.aiSummary.map((sentence, i) => (
           <ReelSlide
