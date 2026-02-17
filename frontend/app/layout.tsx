@@ -4,7 +4,6 @@ import "./globals.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { ConfigProvider } from "antd";
 import BottomNavigation from "@/components/BottomNavigation";
-import Navigation from "@/components/Navigation";
 import { theme } from "@/lib/antd-theme";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -34,7 +33,6 @@ export default function RootLayout({
       <body className={plusJakartaSans.variable}>
         <AntdRegistry>
           <ConfigProvider theme={theme}>
-            <Navigation />
             {children}
             <BottomNavigation />
           </ConfigProvider>
