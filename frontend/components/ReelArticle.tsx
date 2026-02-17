@@ -9,10 +9,16 @@ import ReelSlide from "./ReelSlide";
 type ReelArticleProps = {
   item: ItemType;
   index: number;
+  isFocused: boolean;
   setRef: (el: HTMLElement | null) => void;
 };
 
-export default function ReelArticle({ item, index, setRef }: ReelArticleProps) {
+export default function ReelArticle({
+  item,
+  index,
+  isFocused,
+  setRef,
+}: ReelArticleProps) {
   const { currentIndex, containerRef, setItemRef } = useScrollSnap(
     item.aiSummary.length,
     { direction: "horizontal" },
@@ -45,7 +51,11 @@ export default function ReelArticle({ item, index, setRef }: ReelArticleProps) {
 
       <ReelProgress total={item.aiSummary.length} current={currentIndex} />
 
-      <ReelOverlay item={item} />
+      <ReelOverlay
+        item={item}
+        isFocused={isFocused}
+        slideIndex={currentIndex}
+      />
     </section>
   );
 }

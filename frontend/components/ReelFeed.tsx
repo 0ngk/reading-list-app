@@ -53,6 +53,7 @@ export default function ReelFeed({ items, initialArticleId }: ReelFeedProps) {
               key={item.id}
               item={item}
               index={i}
+              isFocused={i === currentIndex}
               setRef={setItemRef(i)}
             />
           ))}

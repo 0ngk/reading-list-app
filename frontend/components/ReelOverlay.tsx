@@ -10,9 +10,15 @@ import type { ItemType } from "@/types/item";
 
 type ReelOverlayProps = {
   item: ItemType;
+  isFocused: boolean;
+  slideIndex: number;
 };
 
-export default function ReelOverlay({ item }: ReelOverlayProps) {
+export default function ReelOverlay({
+  item,
+  isFocused,
+  slideIndex,
+}: ReelOverlayProps) {
   const [expanded, setExpanded] = useState(false);
   const [titleMarquee, setTitleMarquee] = useState({
     enabled: false,
@@ -55,6 +61,25 @@ export default function ReelOverlay({ item }: ReelOverlayProps) {
       window.removeEventListener("resize", updateMarquee);
     };
   }, []);
+
+  useEffect(() => {
+    const textEl = titleTextRef.current;
+    if (!textEl) return;
+    if (slideIndex < 0) return;
+
+    // フォーカス移動時にタイトル位置を先頭へ戻す
+    textEl.style.animation = "none";
+    textEl.style.transform = "translateX(0)";
+
+    if (!isFocused || !titleMarquee.enabled) return;
+
+    const rafId = requestAnimationFrame(() => {
+      textEl.style.animation = "";
+      textEl.style.transform = "";
+    });
+
+    return () => cancelAnimationFrame(rafId);
+  }, [isFocused, slideIndex, titleMarquee.enabled]);
 
   return (
     <div className={`reel-overlay ${expanded ? "expanded" : "compact"}`}>
