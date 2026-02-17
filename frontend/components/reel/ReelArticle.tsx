@@ -59,6 +59,8 @@ export default function ReelArticle({
       className="reel-article"
       aria-label={`記事: ${item.title}`}
     >
+      <ReelProgress total={item.aiSummary.length} current={currentIndex} />
+
       <section
         ref={containerRef as React.RefObject<HTMLDivElement>}
         className="reel-slides"
@@ -78,8 +80,6 @@ export default function ReelArticle({
           />
         ))}
       </section>
-
-      <ReelProgress total={item.aiSummary.length} current={currentIndex} />
 
       <ReelOverlay
         item={item}
