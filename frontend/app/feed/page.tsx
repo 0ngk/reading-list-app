@@ -2,12 +2,23 @@ import { ReelFeed } from "@/components/reel";
 import { fetchArticles } from "@/lib/fetch";
 import type { ItemType } from "@/types/item";
 
+const sleep = (ms: number) =>
+  new Promise<void>((resolve) => {
+    setTimeout(resolve, ms);
+  });
+
 export default async function FeedPage({
   searchParams,
 }: {
-  searchParams: Promise<{ article?: string }>;
+  searchParams: Promise<{ article?: string; debugDelayMs?: string }>;
 }) {
-  const { article: initialArticleId } = await searchParams;
+  const { article: initialArticleId, debugDelayMs } = await searchParams;
+
+  const parsedDebugDelayMs = Number.parseInt(debugDelayMs ?? "", 10);
+  if (Number.isFinite(parsedDebugDelayMs) && parsedDebugDelayMs > 0) {
+    // loading.tsx の表示確認用。クエリで明示したときだけ遅延させる。
+    await sleep(Math.min(parsedDebugDelayMs, 10_000));
+  }
 
   let items: ItemType[];
   try {
