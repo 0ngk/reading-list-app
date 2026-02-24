@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect } from "react";
+
 const PROGRESS_SEGMENT_KEYS = [
   "seg-1",
   "seg-2",
@@ -10,6 +14,11 @@ const SLIDE_LINE_WIDTHS = ["78%", "92%", "70%"] as const;
 const OVERLAY_TITLE_WIDTHS = ["86%", "58%"] as const;
 
 export default function FeedLoading() {
+  useEffect(() => {
+    document.body.classList.add("feed-active");
+    return () => document.body.classList.remove("feed-active");
+  }, []);
+
   return (
     <main className="reel-loading-stage" aria-busy="true">
       <output className="reel-loading-sr-only" aria-live="polite">
