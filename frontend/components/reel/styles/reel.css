@@ -442,10 +442,6 @@ body.feed-active .top-navigation {
   height: 100%;
 }
 
-.reel-loading-phone-shell {
-  height: 100%;
-}
-
 .reel-loading-feed {
   overflow: hidden;
   pointer-events: none;
