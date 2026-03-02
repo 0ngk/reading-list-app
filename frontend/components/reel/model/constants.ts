@@ -11,3 +11,5 @@ export const SLIDE_GRADIENT_CLASSES = [
 export const EDGE_WHEEL_THRESHOLD = 120;
 export const EDGE_SWIPE_THRESHOLD = 56;
 export const EDGE_TRANSITION_COOLDOWN_MS = 450;
+
+export const AUTO_ADVANCE_INTERVAL_MS = 5000;

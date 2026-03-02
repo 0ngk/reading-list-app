@@ -5,6 +5,7 @@ import { useScrollSnap } from "@/hooks/useScrollSnap";
 import type { ItemType } from "@/types/item";
 import ReelCommentsSheet from "../comments/ReelCommentsSheet";
 import type { ReelComment } from "../comments/types";
+import { useAutoAdvance } from "../hooks/useAutoAdvance";
 import { useSlideTapNavigation } from "../hooks/useSlideTapNavigation";
 import {
   EDGE_SWIPE_THRESHOLD,
@@ -49,6 +50,7 @@ export default function ReelArticle({
   const [comments, setComments] = useState<ReelComment[]>([]);
   const [isCommentsOpen, setIsCommentsOpen] = useState(false);
   const [draft, setDraft] = useState("");
+  const [isPointerDown, setIsPointerDown] = useState(false);
   const lastEdgeTransitionAtRef = useRef(0);
   const wheelEdgeDeltaRef = useRef(0);
   const handledEntryResetTokenRef = useRef(entryResetToken);
@@ -95,18 +97,53 @@ export default function ReelArticle({
     ],
   );
 
-  const { onPointerDown, onPointerUp } = useSlideTapNavigation({
+  const autoAdvancePaused = !isFocused || isCommentsOpen || isPointerDown;
+
+  const { progress, timerKey } = useAutoAdvance({
     currentIndex,
-    totalSlides,
-    scrollTo,
-    swipeThreshold: EDGE_SWIPE_THRESHOLD,
-    onEdgePrev: () => {
-      tryEdgeTransition("prev");
-    },
-    onEdgeNext: () => {
-      tryEdgeTransition("next");
+    paused: autoAdvancePaused,
+    onAdvance: () => {
+      if (currentIndex < lastSlideIndex) {
+        scrollTo(currentIndex + 1);
+      } else {
+        onRequestNextArticle();
+      }
     },
   });
+
+  const { onPointerDown: onSlideTapDown, onPointerUp: onSlideTapUp } =
+    useSlideTapNavigation({
+      currentIndex,
+      totalSlides,
+      scrollTo,
+      swipeThreshold: EDGE_SWIPE_THRESHOLD,
+      onEdgePrev: () => {
+        tryEdgeTransition("prev");
+      },
+      onEdgeNext: () => {
+        tryEdgeTransition("next");
+      },
+    });
+
+  const handlePointerDown = useCallback(
+    (e: React.PointerEvent<HTMLElement>) => {
+      setIsPointerDown(true);
+      onSlideTapDown(e);
+    },
+    [onSlideTapDown],
+  );
+
+  const handlePointerUp = useCallback(
+    (e: React.PointerEvent<HTMLElement>) => {
+      setIsPointerDown(false);
+      onSlideTapUp(e);
+    },
+    [onSlideTapUp],
+  );
+
+  const handlePointerCancelOrLeave = useCallback(() => {
+    setIsPointerDown(false);
+  }, []);
 
   const handleOpenComments = useCallback(() => setIsCommentsOpen(true), []);
   const handleCloseComments = useCallback(() => setIsCommentsOpen(false), []);
@@ -239,15 +276,22 @@ export default function ReelArticle({
       className="relative h-[calc(100dvh-76px-env(safe-area-inset-bottom))] snap-start [scroll-snap-stop:always] overflow-hidden md:h-full"
       aria-label={`記事: ${item.title}`}
     >
-      <ReelProgress total={totalSlides} current={currentIndex} />
+      <ReelProgress
+        total={totalSlides}
+        current={currentIndex}
+        progress={progress}
+        timerKey={timerKey}
+      />
 
       <section
         ref={containerRef as React.RefObject<HTMLDivElement>}
         className="flex h-full w-full cursor-pointer overflow-x-auto overflow-y-hidden [scroll-snap-type:x_mandatory] [overscroll-behavior-x:contain] scroll-smooth motion-reduce:scroll-auto [-ms-overflow-style:none] [scrollbar-width:none] [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden"
         aria-roledescription="carousel"
         aria-label={`AI要約: 全${totalSlides}枚`}
-        onPointerDown={onPointerDown}
-        onPointerUp={onPointerUp}
+        onPointerDown={handlePointerDown}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerCancelOrLeave}
+        onPointerLeave={handlePointerCancelOrLeave}
         onWheel={handleWheel}
       >
         {item.aiSummary.map((sentence, i) => (
