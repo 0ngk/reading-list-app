@@ -61,58 +61,6 @@ body.feed-active .top-navigation {
   transition: all 0.3s ease;
 }
 
-.reel-overlay-trigger {
-  display: block;
-  width: 100%;
-  min-width: 0;
-  padding: 0;
-  margin: 0;
-  border: none;
-  background: transparent;
-  color: inherit;
-  text-align: left;
-  font: inherit;
-  cursor: pointer;
-}
-
-.reel-overlay-trigger:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.8);
-  outline-offset: 2px;
-}
-
-.reel-overlay.expanded .reel-overlay-glass {
-  background: rgba(0, 0, 0, 0.4);
-  padding: 16px;
-}
-
-.reel-overlay-title {
-  color: #ffffff;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 1.4;
-  margin: 0;
-  overflow: hidden;
-}
-
-.reel-overlay-title-mask {
-  display: block;
-  max-width: 100%;
-  overflow: hidden;
-}
-
-.reel-overlay-title-text {
-  display: inline-block;
-  max-width: 100%;
-  white-space: nowrap;
-  will-change: transform;
-}
-
-.reel-overlay-title-text.is-marquee {
-  animation: reel-title-marquee var(--title-marquee-duration, 8s) linear
-    infinite;
-  animation-delay: 0.8s;
-}
-
 @keyframes reel-title-marquee {
   0%,
   10% {
@@ -122,57 +70,6 @@ body.feed-active .top-navigation {
   100% {
     transform: translateX(calc(var(--title-marquee-distance, 0px) * -1));
   }
-}
-
-.reel-overlay.expanded .reel-overlay-title {
-  display: block;
-}
-
-.reel-overlay-details {
-  margin-top: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.reel-overlay-url {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 13px;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition: color 0.2s ease;
-}
-
-.reel-overlay-url:hover {
-  color: #ffffff;
-}
-
-.reel-overlay-actions {
-  display: flex;
-  gap: 12px;
-}
-
-.reel-action-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: none;
-  color: #ffffff;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.reel-action-btn:hover {
-  background: rgba(255, 255, 255, 0.25);
 }
 
 /* ========================================
@@ -533,31 +430,6 @@ body.feed-active .top-navigation {
    ======================================== */
 
 /* ========================================
-   Reel Comments - Comment Button Badge
-   ======================================== */
-
-.reel-action-btn-comment {
-  position: relative;
-}
-
-.reel-comment-badge {
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  min-width: 18px;
-  height: 18px;
-  border-radius: 9px;
-  background: #f97316;
-  color: #fff;
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 18px;
-  text-align: center;
-  padding: 0 5px;
-  pointer-events: none;
-}
-
-/* ========================================
    Reel Comments - Bottom Sheet
    ======================================== */
 
@@ -907,9 +779,6 @@ body.feed-active .top-navigation {
    ======================================== */
 
 @media (prefers-reduced-motion: reduce) {
-  .reel-overlay-glass,
-  .reel-action-btn,
-  .reel-overlay-title-text.is-marquee,
   .reel-loading-segment::after,
   .reel-loading-shimmer::after,
   .reel-comments-backdrop,
