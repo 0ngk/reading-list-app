@@ -2,6 +2,7 @@
 
 import {
   BookOutlined,
+  CommentOutlined,
   LinkOutlined,
   ShareAltOutlined,
 } from "@ant-design/icons";
@@ -13,12 +14,16 @@ type ReelOverlayProps = {
   item: ItemType;
   isFocused: boolean;
   slideIndex: number;
+  commentCount: number;
+  onOpenComments: () => void;
 };
 
 export default function ReelOverlay({
   item,
   isFocused,
   slideIndex,
+  commentCount,
+  onOpenComments,
 }: ReelOverlayProps) {
   const [expanded, setExpanded] = useState(false);
   const { titleMaskRef, titleTextRef, isMarquee, marqueeStyle } =
@@ -72,6 +77,20 @@ export default function ReelOverlay({
             )}
 
             <div className="reel-overlay-actions">
+              <button
+                type="button"
+                className="reel-action-btn reel-action-btn-comment"
+                aria-label={`コメント ${commentCount}件`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onOpenComments();
+                }}
+              >
+                <CommentOutlined />
+                {commentCount > 0 && (
+                  <span className="reel-comment-badge">{commentCount}</span>
+                )}
+              </button>
               <button
                 type="button"
                 className="reel-action-btn"

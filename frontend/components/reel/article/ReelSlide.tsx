@@ -19,13 +19,13 @@ export default function ReelSlide({
     <article
       ref={setRef}
       data-snap-index={index}
-      className="reel-slide"
+      className="box-border flex h-full w-full grow-0 shrink-0 basis-full snap-start snap-always items-center justify-center px-8 pt-20 pb-40 md:pt-[60px] md:pb-[140px]"
       style={{ background: SLIDE_GRADIENTS[index % SLIDE_GRADIENTS.length] }}
       aria-roledescription="slide"
       aria-label={`スライド ${index + 1} / ${totalSlides}`}
     >
-      <p className="reel-slide-text">
-        <span className="reel-slide-emoji">{emoji}</span>
+      <p className="m-0 text-center text-2xl leading-[1.7] font-semibold text-white [overflow-wrap:anywhere] [text-shadow:0_2px_8px_rgba(0,0,0,0.4)] [word-break:auto-phrase]">
+        <span className="mb-5 block text-5xl [text-shadow:none]">{emoji}</span>
         {text}
       </p>
     </article>

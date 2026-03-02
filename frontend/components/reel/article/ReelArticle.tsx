@@ -1,7 +1,10 @@
 "use client";
 
+import { useCallback, useState } from "react";
 import { useScrollSnap } from "@/hooks/useScrollSnap";
 import type { ItemType } from "@/types/item";
+import ReelCommentsSheet from "../comments/ReelCommentsSheet";
+import type { ReelComment } from "../comments/types";
 import { useSlideTapNavigation } from "../hooks/useSlideTapNavigation";
 import ReelOverlay from "../overlay/ReelOverlay";
 import ReelProgress from "./ReelProgress";
@@ -30,6 +33,32 @@ export default function ReelArticle({
     totalSlides,
     scrollTo,
   });
+
+  const [comments, setComments] = useState<ReelComment[]>([]);
+  const [isCommentsOpen, setIsCommentsOpen] = useState(false);
+  const [draft, setDraft] = useState("");
+
+  const handleOpenComments = useCallback(() => setIsCommentsOpen(true), []);
+  const handleCloseComments = useCallback(() => setIsCommentsOpen(false), []);
+
+  const handleSubmitComment = useCallback(() => {
+    const body = draft.trim();
+    if (body.length === 0 || body.length > 280) return;
+    const newComment: ReelComment = {
+      id: crypto.randomUUID(),
+      articleId: item.id,
+      authorName: "あなた",
+      body,
+      createdAt: Date.now(),
+      isMine: true,
+    };
+    setComments((prev) => [...prev, newComment]);
+    setDraft("");
+  }, [draft, item.id]);
+
+  const handleDeleteComment = useCallback((commentId: string) => {
+    setComments((prev) => prev.filter((c) => c.id !== commentId));
+  }, []);
 
   return (
     <section
@@ -64,6 +93,19 @@ export default function ReelArticle({
         item={item}
         isFocused={isFocused}
         slideIndex={currentIndex}
+        commentCount={comments.length}
+        onOpenComments={handleOpenComments}
+      />
+
+      <ReelCommentsSheet
+        open={isCommentsOpen}
+        itemTitle={item.title}
+        comments={comments}
+        draft={draft}
+        onDraftChange={setDraft}
+        onSubmit={handleSubmitComment}
+        onDelete={handleDeleteComment}
+        onClose={handleCloseComments}
       />
     </section>
   );

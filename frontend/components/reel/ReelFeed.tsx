@@ -42,8 +42,8 @@ export default function ReelFeed({ items, initialArticleId }: ReelFeedProps) {
   }, [currentIndex, items]);
 
   return (
-    <div className="desktop-reel-frame">
-      <div className="desktop-reel-phone">
+    <div className="desktop-reel-frame h-dvh md:flex md:items-center md:justify-center md:bg-slate-900">
+      <div className="desktop-reel-phone h-full md:relative md:h-[min(844px,calc(100dvh-48px))] md:w-[390px] md:overflow-hidden md:rounded-[24px] md:[box-shadow:0_0_0_8px_#1e293b,0_25px_50px_rgba(0,0,0,0.5)]">
         <div
           ref={containerRef as React.RefObject<HTMLDivElement>}
           className="reel-feed"

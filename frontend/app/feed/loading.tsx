@@ -26,10 +26,10 @@ export default function FeedLoading() {
       </output>
 
       <div
-        className="desktop-reel-frame reel-loading-frame-shell"
+        className="desktop-reel-frame reel-loading-frame-shell h-dvh md:flex md:items-center md:justify-center md:bg-slate-900"
         aria-hidden="true"
       >
-        <div className="desktop-reel-phone reel-loading-phone-shell">
+        <div className="desktop-reel-phone reel-loading-phone-shell h-full md:relative md:h-[min(844px,calc(100dvh-48px))] md:w-[390px] md:overflow-hidden md:rounded-[24px] md:[box-shadow:0_0_0_8px_#1e293b,0_25px_50px_rgba(0,0,0,0.5)]">
           <div className="reel-feed reel-loading-feed">
             <section className="reel-article reel-loading-article">
               <div className="reel-progress reel-loading-progress">
