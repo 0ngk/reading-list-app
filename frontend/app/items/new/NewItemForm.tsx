@@ -104,7 +104,7 @@ export default function NewItemForm() {
       )}
 
       {/* ボタン */}
-      <Form.Item style={{ marginBottom: 0 }}>
+      <Form.Item className="!mb-0">
         <div className="flex w-full gap-3">
           <BackButton
             variant="form"
@@ -120,7 +120,6 @@ export default function NewItemForm() {
             icon={!isPending ? <PlusOutlined /> : undefined}
             size="large"
             className="!flex-1 !border-orange-500 !bg-orange-500 !text-white hover:!border-orange-600 hover:!bg-orange-600 active:!border-orange-600 active:!bg-orange-600"
-            style={{ flex: 1 }}
           >
             {isPending ? "追加中..." : "追加する"}
           </Button>

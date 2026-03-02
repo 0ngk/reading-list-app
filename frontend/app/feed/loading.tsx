@@ -1,17 +1,17 @@
 "use client";
 
-import { type CSSProperties, useEffect } from "react";
+import { useEffect } from "react";
 
-const PROGRESS_SEGMENT_KEYS = [
-  "seg-1",
-  "seg-2",
-  "seg-3",
-  "seg-4",
-  "seg-5",
-  "seg-6",
+const PROGRESS_SEGMENTS = [
+  { key: "seg-1", delayClass: "after:[animation-delay:0s]" },
+  { key: "seg-2", delayClass: "after:[animation-delay:0.08s]" },
+  { key: "seg-3", delayClass: "after:[animation-delay:0.16s]" },
+  { key: "seg-4", delayClass: "after:[animation-delay:0.24s]" },
+  { key: "seg-5", delayClass: "after:[animation-delay:0.32s]" },
+  { key: "seg-6", delayClass: "after:[animation-delay:0.4s]" },
 ] as const;
-const SLIDE_LINE_WIDTHS = ["78%", "92%", "70%"] as const;
-const OVERLAY_TITLE_WIDTHS = ["86%", "58%"] as const;
+const SLIDE_LINE_WIDTH_CLASSES = ["w-[78%]", "w-[92%]", "w-[70%]"] as const;
+const OVERLAY_TITLE_WIDTH_CLASSES = ["w-[86%]", "w-[58%]"] as const;
 const SHIMMER_CLASS =
   "relative overflow-hidden after:pointer-events-none after:absolute after:inset-0 after:translate-x-[-130%] after:content-[''] after:bg-[linear-gradient(115deg,transparent_0%,rgba(255,255,255,0.06)_35%,rgba(255,255,255,0.28)_50%,rgba(255,255,255,0.06)_65%,transparent_100%)] after:animate-[reel-loading-sweep_2s_ease-in-out_infinite] motion-reduce:after:animate-none motion-reduce:after:transition-none";
 
@@ -38,15 +38,11 @@ export default function FeedLoading() {
           <div className="pointer-events-none h-[calc(100dvh-76px-env(safe-area-inset-bottom))] overflow-hidden overflow-x-hidden overflow-y-auto [scroll-snap-type:y_mandatory] [overscroll-behavior-y:contain] scroll-smooth motion-reduce:scroll-auto [-ms-overflow-style:none] [scrollbar-width:none] [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden md:h-full">
             <section className="relative h-[calc(100dvh-76px-env(safe-area-inset-bottom))] snap-start overflow-hidden [scroll-snap-stop:always] bg-[radial-gradient(120%_100%_at_18%_10%,rgba(255,255,255,0.08),rgba(255,255,255,0)_52%),radial-gradient(120%_120%_at_55%_88%,rgba(0,0,0,0.22),rgba(0,0,0,0)_55%),linear-gradient(135deg,#581c87_0%,#1e3a8a_100%)] before:pointer-events-none before:absolute before:inset-0 before:opacity-[0.45] before:content-[''] before:bg-[length:26px_26px] before:bg-[linear-gradient(rgba(255,255,255,0.014)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.014)_1px,transparent_1px)] md:h-full">
               <div className="pointer-events-none absolute inset-x-0 top-0 z-[32] flex gap-1 px-3 pt-[calc(12px+env(safe-area-inset-top))] md:pt-3">
-                {PROGRESS_SEGMENT_KEYS.map((key, index) => {
-                  const segmentStyle = {
-                    "--segment-delay": `${index * 0.08}s`,
-                  } as CSSProperties;
+                {PROGRESS_SEGMENTS.map((segment, index) => {
                   return (
                     <span
-                      key={key}
-                      style={segmentStyle}
-                      className={`relative block h-[3px] flex-1 overflow-hidden rounded-full after:absolute after:inset-0 after:translate-x-[-120%] after:content-[''] after:bg-[linear-gradient(110deg,transparent_0%,rgba(255,255,255,0.12)_35%,rgba(255,255,255,0.45)_50%,rgba(255,255,255,0.12)_65%,transparent_100%)] after:animate-[reel-loading-sweep_2.2s_ease-in-out_infinite] after:[animation-delay:var(--segment-delay)] motion-reduce:after:animate-none motion-reduce:after:transition-none ${
+                      key={segment.key}
+                      className={`relative block h-[3px] flex-1 overflow-hidden rounded-full after:absolute after:inset-0 after:translate-x-[-120%] after:content-[''] after:bg-[linear-gradient(110deg,transparent_0%,rgba(255,255,255,0.12)_35%,rgba(255,255,255,0.45)_50%,rgba(255,255,255,0.12)_65%,transparent_100%)] after:animate-[reel-loading-sweep_2.2s_ease-in-out_infinite] ${segment.delayClass} motion-reduce:after:animate-none motion-reduce:after:transition-none ${
                         index === 0 ? "bg-white/24" : "bg-white/16"
                       }`}
                     />
@@ -61,11 +57,10 @@ export default function FeedLoading() {
                 />
 
                 <div className="flex w-[min(86%,420px)] flex-col items-center gap-3">
-                  {SLIDE_LINE_WIDTHS.map((width) => (
+                  {SLIDE_LINE_WIDTH_CLASSES.map((widthClass) => (
                     <span
-                      key={`slide-line-${width}`}
-                      className={`${SHIMMER_CLASS} block h-3.5 rounded-full bg-white/[0.13]`}
-                      style={{ width }}
+                      key={`slide-line-${widthClass}`}
+                      className={`${SHIMMER_CLASS} block h-3.5 rounded-full bg-white/[0.13] ${widthClass}`}
                     />
                   ))}
                 </div>
@@ -87,11 +82,10 @@ export default function FeedLoading() {
                   </div>
 
                   <div className="flex flex-col gap-2.5">
-                    {OVERLAY_TITLE_WIDTHS.map((width) => (
+                    {OVERLAY_TITLE_WIDTH_CLASSES.map((widthClass) => (
                       <span
-                        key={`overlay-line-${width}`}
-                        className={`${SHIMMER_CLASS} block h-3 rounded-full bg-white/[0.13]`}
-                        style={{ width }}
+                        key={`overlay-line-${widthClass}`}
+                        className={`${SHIMMER_CLASS} block h-3 rounded-full bg-white/[0.13] ${widthClass}`}
                       />
                     ))}
                   </div>

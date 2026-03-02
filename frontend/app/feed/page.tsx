@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ReelFeed } from "@/components/reel";
 import { fetchArticles } from "@/lib/fetch";
 import type { ItemType } from "@/types/item";
@@ -25,16 +26,7 @@ export default async function FeedPage({
     items = await fetchArticles();
   } catch {
     return (
-      <main
-        style={{
-          minHeight: "100dvh",
-          backgroundColor: "#000",
-          color: "#fff",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
+      <main className="flex min-h-dvh items-center justify-center bg-black text-white">
         <p>記事の取得に失敗しました。</p>
       </main>
     );
@@ -42,30 +34,14 @@ export default async function FeedPage({
 
   if (items.length === 0) {
     return (
-      <main
-        style={{
-          minHeight: "100dvh",
-          backgroundColor: "#0f172a",
-          color: "#fff",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexDirection: "column",
-          gap: 16,
-        }}
-      >
-        <p style={{ fontSize: 18, fontWeight: 500 }}>まだ記事がありません</p>
-        <a
+      <main className="flex min-h-dvh flex-col items-center justify-center gap-4 bg-slate-900 text-white">
+        <p className="text-lg font-medium">まだ記事がありません</p>
+        <Link
           href="/items/new"
-          style={{
-            color: "#f97316",
-            textDecoration: "none",
-            fontSize: 16,
-            fontWeight: 600,
-          }}
+          className="text-base font-semibold text-orange-500 no-underline transition-colors hover:text-orange-400"
         >
           最初の記事を追加する
-        </a>
+        </Link>
       </main>
     );
   }

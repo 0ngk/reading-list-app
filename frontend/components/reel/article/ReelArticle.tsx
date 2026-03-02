@@ -71,7 +71,7 @@ export default function ReelArticle({
 
       <section
         ref={containerRef as React.RefObject<HTMLDivElement>}
-        className="reel-slides flex h-full w-full cursor-pointer overflow-x-auto overflow-y-hidden [scroll-snap-type:x_mandatory] [overscroll-behavior-x:contain] scroll-smooth motion-reduce:scroll-auto [-ms-overflow-style:none] [scrollbar-width:none] [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden"
+        className="flex h-full w-full cursor-pointer overflow-x-auto overflow-y-hidden [scroll-snap-type:x_mandatory] [overscroll-behavior-x:contain] scroll-smooth motion-reduce:scroll-auto [-ms-overflow-style:none] [scrollbar-width:none] [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden"
         aria-roledescription="carousel"
         aria-label={`AI要約: 全${totalSlides}枚`}
         onPointerDown={onPointerDown}

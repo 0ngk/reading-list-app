@@ -33,10 +33,9 @@ export default function BackButton({
         onClick={() => router.push(href)}
         disabled={disabled}
         size="large"
-        className={className}
+        className={`!flex-1 ${className}`}
         aria-label={label}
         icon={icon}
-        style={{ flex: 1 }}
       >
         {label}
       </Button>
@@ -46,7 +45,7 @@ export default function BackButton({
   if (variant === "text") {
     // テキストリンク
     return (
-      <Link href={href} style={{ textDecoration: "none" }}>
+      <Link href={href} className="no-underline">
         <Button
           type="link"
           icon={<ArrowLeftOutlined />}
@@ -62,7 +61,7 @@ export default function BackButton({
 
   // default: ボタン風
   return (
-    <Link href={href} style={{ textDecoration: "none" }}>
+    <Link href={href} className="no-underline">
       <Button
         type="default"
         icon={<ArrowLeftOutlined />}

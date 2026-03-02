@@ -1,4 +1,4 @@
-import { SLIDE_GRADIENTS } from "../model/constants";
+import { SLIDE_GRADIENT_CLASSES } from "../model/constants";
 
 type ReelSlideProps = {
   emoji: string;
@@ -19,8 +19,9 @@ export default function ReelSlide({
     <article
       ref={setRef}
       data-snap-index={index}
-      className="box-border flex h-full w-full grow-0 shrink-0 basis-full snap-start snap-always items-center justify-center px-8 pt-20 pb-40 md:pt-[60px] md:pb-[140px]"
-      style={{ background: SLIDE_GRADIENTS[index % SLIDE_GRADIENTS.length] }}
+      className={`box-border flex h-full w-full grow-0 shrink-0 basis-full snap-start snap-always items-center justify-center px-8 pt-20 pb-40 md:pt-[60px] md:pb-[140px] ${
+        SLIDE_GRADIENT_CLASSES[index % SLIDE_GRADIENT_CLASSES.length]
+      }`}
       aria-roledescription="slide"
       aria-label={`スライド ${index + 1} / ${totalSlides}`}
     >

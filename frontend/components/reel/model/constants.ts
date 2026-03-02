@@ -1,9 +1,9 @@
-export const SLIDE_GRADIENTS = [
-  "linear-gradient(135deg, #581c87 0%, #1e3a8a 100%)",
-  "linear-gradient(135deg, #134e4a 0%, #064e3b 100%)",
-  "linear-gradient(135deg, #1e1b4b 0%, #312e81 100%)",
-  "linear-gradient(135deg, #881337 0%, #9a3412 100%)",
-  "linear-gradient(135deg, #0c4a6e 0%, #155e75 100%)",
-  "linear-gradient(135deg, #3b0764 0%, #701a75 100%)",
-  "linear-gradient(135deg, #1a2e05 0%, #365314 100%)",
-];
+export const SLIDE_GRADIENT_CLASSES = [
+  "bg-[linear-gradient(135deg,#581c87_0%,#1e3a8a_100%)]",
+  "bg-[linear-gradient(135deg,#134e4a_0%,#064e3b_100%)]",
+  "bg-[linear-gradient(135deg,#1e1b4b_0%,#312e81_100%)]",
+  "bg-[linear-gradient(135deg,#881337_0%,#9a3412_100%)]",
+  "bg-[linear-gradient(135deg,#0c4a6e_0%,#155e75_100%)]",
+  "bg-[linear-gradient(135deg,#3b0764_0%,#701a75_100%)]",
+  "bg-[linear-gradient(135deg,#1a2e05_0%,#365314_100%)]",
+] as const;
