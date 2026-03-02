@@ -64,14 +64,14 @@ export default function ReelArticle({
     <section
       ref={setRef}
       data-snap-index={index}
-      className="reel-article"
+      className="reel-article relative h-[calc(100dvh-76px-env(safe-area-inset-bottom))] snap-start [scroll-snap-stop:always] overflow-hidden md:h-dvh"
       aria-label={`記事: ${item.title}`}
     >
       <ReelProgress total={totalSlides} current={currentIndex} />
 
       <section
         ref={containerRef as React.RefObject<HTMLDivElement>}
-        className="reel-slides"
+        className="reel-slides flex h-full w-full cursor-pointer overflow-x-auto overflow-y-hidden [scroll-snap-type:x_mandatory] [overscroll-behavior-x:contain] scroll-smooth motion-reduce:scroll-auto [-ms-overflow-style:none] [scrollbar-width:none] [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden"
         aria-roledescription="carousel"
         aria-label={`AI要約: 全${totalSlides}枚`}
         onPointerDown={onPointerDown}

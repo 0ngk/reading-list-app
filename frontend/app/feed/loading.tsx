@@ -30,8 +30,8 @@ export default function FeedLoading() {
         aria-hidden="true"
       >
         <div className="desktop-reel-phone reel-loading-phone-shell h-full md:relative md:h-[min(844px,calc(100dvh-48px))] md:w-[390px] md:overflow-hidden md:rounded-[24px] md:[box-shadow:0_0_0_8px_#1e293b,0_25px_50px_rgba(0,0,0,0.5)]">
-          <div className="reel-feed reel-loading-feed">
-            <section className="reel-article reel-loading-article">
+          <div className="reel-feed reel-loading-feed h-[calc(100dvh-76px-env(safe-area-inset-bottom))] overflow-x-hidden overflow-y-auto [scroll-snap-type:y_mandatory] [overscroll-behavior-y:contain] scroll-smooth motion-reduce:scroll-auto [-ms-overflow-style:none] [scrollbar-width:none] [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden md:h-dvh">
+            <section className="reel-article reel-loading-article relative h-[calc(100dvh-76px-env(safe-area-inset-bottom))] snap-start [scroll-snap-stop:always] overflow-hidden md:h-dvh">
               <div className="reel-progress reel-loading-progress">
                 {PROGRESS_SEGMENT_KEYS.map((key, index) => (
                   <span

@@ -13,66 +13,6 @@ body.feed-active .top-navigation {
   display: none !important;
 }
 
-/* 縦スクロール: 記事間移動 */
-.reel-feed {
-  height: calc(100dvh - 76px - env(safe-area-inset-bottom));
-  overflow-y: auto;
-  overflow-x: hidden;
-  scroll-snap-type: y mandatory;
-  overscroll-behavior-y: contain;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* デスクトップではボトムナビがないので100dvh */
-@media (min-width: 768px) {
-  .reel-feed {
-    height: 100dvh;
-  }
-}
-
-.reel-feed::-webkit-scrollbar {
-  display: none;
-}
-
-/* 1記事分のコンテナ */
-.reel-article {
-  position: relative;
-  height: calc(100dvh - 76px - env(safe-area-inset-bottom));
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  overflow: hidden;
-}
-
-/* デスクトップでは100dvh */
-@media (min-width: 768px) {
-  .reel-article {
-    height: 100dvh;
-  }
-}
-
-/* 横スクロール: スライド間移動 */
-.reel-slides {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  overscroll-behavior-x: contain;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  -webkit-overflow-scrolling: touch;
-}
-
-.reel-slides::-webkit-scrollbar {
-  display: none;
-}
-
 /* ========================================
    Reel Progress Bar (Stories風)
    ======================================== */
@@ -967,15 +907,8 @@ body.feed-active .top-navigation {
    ======================================== */
 
 @media (prefers-reduced-motion: reduce) {
-  .reel-feed,
-  .reel-slides {
-    scroll-behavior: auto;
-  }
-
   .reel-overlay-glass,
   .reel-action-btn,
-  .reel-fab,
-  .reel-progress-segment,
   .reel-overlay-title-text.is-marquee,
   .reel-loading-segment::after,
   .reel-loading-shimmer::after,
