@@ -25,6 +25,7 @@ type ReelArticleProps = {
   onRequestPrevArticle: () => void;
   onRequestNextArticle: () => void;
   entryResetToken: number;
+  onCommentsOpenChange: (articleId: string, open: boolean) => void;
 };
 
 export default function ReelArticle({
@@ -37,6 +38,7 @@ export default function ReelArticle({
   onRequestPrevArticle,
   onRequestNextArticle,
   entryResetToken,
+  onCommentsOpenChange,
 }: ReelArticleProps) {
   const totalSlides = item.aiSummary.length;
   const lastSlideIndex = totalSlides - 1;
@@ -50,6 +52,18 @@ export default function ReelArticle({
   const lastEdgeTransitionAtRef = useRef(0);
   const wheelEdgeDeltaRef = useRef(0);
   const handledEntryResetTokenRef = useRef(entryResetToken);
+
+  // コメント開閉を親に通知
+  useEffect(() => {
+    onCommentsOpenChange(item.id, isCommentsOpen);
+  }, [isCommentsOpen, item.id, onCommentsOpenChange]);
+
+  // アンマウント時にロック取り残し防止
+  useEffect(() => {
+    return () => {
+      onCommentsOpenChange(item.id, false);
+    };
+  }, [item.id, onCommentsOpenChange]);
 
   const tryEdgeTransition = useCallback(
     (direction: "prev" | "next") => {
