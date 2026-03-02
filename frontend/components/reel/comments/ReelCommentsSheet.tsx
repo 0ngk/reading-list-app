@@ -112,7 +112,7 @@ export default function ReelCommentsSheet({
   const controlButtonClass =
     "flex h-9 w-9 items-center justify-center rounded-full border border-white/14 bg-white/[0.09] text-sm text-white/85 transition-colors duration-200 hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500/75 motion-reduce:transition-none";
   const textareaClass =
-    "min-h-11 max-h-[132px] w-full resize-none rounded-[14px] border border-white/16 bg-white/[0.1] px-3.5 py-[11px] text-sm leading-[1.45] text-white outline-none placeholder:text-white/45 transition-[border-color,background,box-shadow] duration-200 focus:border-orange-500/60 focus:bg-white/[0.14] focus:shadow-[0_0_0_3px_rgba(249,115,22,0.16)] [box-sizing:border-box] [field-sizing:content] [font-family:inherit] motion-reduce:transition-none";
+    "block min-h-11 max-h-[132px] w-full resize-none rounded-[14px] border border-white/16 bg-white/[0.1] px-3.5 py-[11px] text-sm leading-[1.45] text-white outline-none placeholder:text-white/45 transition-[border-color,background,box-shadow] duration-200 focus:border-orange-500/60 focus:bg-white/[0.14] focus:shadow-[0_0_0_3px_rgba(249,115,22,0.16)] [box-sizing:border-box] [field-sizing:content] [font-family:inherit] motion-reduce:transition-none";
   const submitButtonClass =
     "flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-0 bg-[linear-gradient(180deg,#fb923c_0%,#f97316_100%)] text-[17px] text-white shadow-[0_8px_18px_rgba(249,115,22,0.28),inset_0_1px_0_rgba(255,255,255,0.25)] transition-[opacity,transform,box-shadow] duration-200 ease-out enabled:cursor-pointer enabled:hover:scale-105 enabled:hover:shadow-[0_10px_22px_rgba(249,115,22,0.35),inset_0_1px_0_rgba(255,255,255,0.25)] enabled:active:scale-95 disabled:cursor-not-allowed disabled:opacity-45 disabled:shadow-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/85 motion-reduce:transition-none";
 
@@ -230,8 +230,8 @@ export default function ReelCommentsSheet({
           )}
         </div>
 
-        <div className="flex shrink-0 items-end gap-2.5 border-t border-white/10 bg-[linear-gradient(180deg,rgba(7,10,16,0.75)_0%,rgba(8,11,16,0.94)_100%)] px-4 pt-3 pb-[calc(12px+env(safe-area-inset-bottom))] md:pb-3">
-          <div className="relative flex-1">
+        <div className="grid shrink-0 grid-cols-[minmax(0,1fr)_auto] items-start gap-x-2.5 gap-y-1.5 border-t border-white/10 bg-[linear-gradient(180deg,rgba(7,10,16,0.75)_0%,rgba(8,11,16,0.94)_100%)] px-4 pt-3 pb-[calc(12px+env(safe-area-inset-bottom))] md:pb-3">
+          <div className="relative min-w-0">
             <textarea
               className={textareaClass}
               name="comment"
@@ -246,26 +246,26 @@ export default function ReelCommentsSheet({
               }}
               rows={1}
             />
-            {!isOverLimit && (
-              <span className="mt-1.5 block pr-1 text-right text-[11px] text-white/45">
-                {trimmed.length}/{MAX_LENGTH} ・ Ctrl/Cmd + Enter で投稿
-              </span>
-            )}
-            {isOverLimit && (
-              <span className="mt-1.5 block pr-1 text-right text-xs font-semibold text-red-500">
-                {trimmed.length}/{MAX_LENGTH}
-              </span>
-            )}
           </div>
           <button
             type="button"
-            className={submitButtonClass}
+            className={`${submitButtonClass} self-center`}
             disabled={!canSubmit}
             onClick={handleSubmit}
             aria-label="コメントを投稿"
           >
             <SendOutlined />
           </button>
+          {!isOverLimit && (
+            <span className="pr-1 text-right text-[11px] text-white/45">
+              {trimmed.length}/{MAX_LENGTH} ・ Ctrl/Cmd + Enter で投稿
+            </span>
+          )}
+          {isOverLimit && (
+            <span className="pr-1 text-right text-xs font-semibold text-red-500">
+              {trimmed.length}/{MAX_LENGTH}
+            </span>
+          )}
         </div>
       </div>
     </div>
