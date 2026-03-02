@@ -22,3 +22,29 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+body.feed-active {
+  overflow: hidden;
+  background-color: #000;
+  padding-bottom: 0;
+}
+
+@keyframes reel-title-marquee {
+  0%,
+  10% {
+    transform: translateX(0);
+  }
+  90%,
+  100% {
+    transform: translateX(calc(var(--title-marquee-distance, 0px) * -1));
+  }
+}
+
+@keyframes reel-loading-sweep {
+  0% {
+    transform: translateX(-130%);
+  }
+  100% {
+    transform: translateX(130%);
+  }
+}

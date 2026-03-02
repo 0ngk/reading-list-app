@@ -31,12 +31,12 @@ export default function FeedLoading() {
       </output>
 
       <div
-        className="desktop-reel-frame h-full md:flex md:items-center md:justify-center md:bg-slate-900"
+        className="h-full md:flex md:items-center md:justify-center md:bg-slate-900"
         aria-hidden="true"
       >
-        <div className="desktop-reel-phone h-full md:relative md:h-[min(844px,calc(100dvh-48px))] md:w-[390px] md:overflow-hidden md:rounded-[24px] md:[box-shadow:0_0_0_8px_#1e293b,0_25px_50px_rgba(0,0,0,0.5)]">
-          <div className="reel-feed pointer-events-none h-[calc(100dvh-76px-env(safe-area-inset-bottom))] overflow-hidden overflow-x-hidden overflow-y-auto [scroll-snap-type:y_mandatory] [overscroll-behavior-y:contain] scroll-smooth motion-reduce:scroll-auto [-ms-overflow-style:none] [scrollbar-width:none] [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden md:h-dvh">
-            <section className="reel-article relative h-[calc(100dvh-76px-env(safe-area-inset-bottom))] snap-start overflow-hidden [scroll-snap-stop:always] bg-[radial-gradient(120%_100%_at_18%_10%,rgba(255,255,255,0.08),rgba(255,255,255,0)_52%),radial-gradient(120%_120%_at_55%_88%,rgba(0,0,0,0.22),rgba(0,0,0,0)_55%),linear-gradient(135deg,#581c87_0%,#1e3a8a_100%)] before:pointer-events-none before:absolute before:inset-0 before:opacity-[0.45] before:content-[''] before:bg-[length:26px_26px] before:bg-[linear-gradient(rgba(255,255,255,0.014)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.014)_1px,transparent_1px)] md:h-dvh">
+        <div className="h-full md:relative md:h-[min(844px,calc(100dvh-48px))] md:w-[390px] md:overflow-hidden md:rounded-[24px] md:[box-shadow:0_0_0_8px_#1e293b,0_25px_50px_rgba(0,0,0,0.5)]">
+          <div className="pointer-events-none h-[calc(100dvh-76px-env(safe-area-inset-bottom))] overflow-hidden overflow-x-hidden overflow-y-auto [scroll-snap-type:y_mandatory] [overscroll-behavior-y:contain] scroll-smooth motion-reduce:scroll-auto [-ms-overflow-style:none] [scrollbar-width:none] [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden md:h-full">
+            <section className="relative h-[calc(100dvh-76px-env(safe-area-inset-bottom))] snap-start overflow-hidden [scroll-snap-stop:always] bg-[radial-gradient(120%_100%_at_18%_10%,rgba(255,255,255,0.08),rgba(255,255,255,0)_52%),radial-gradient(120%_120%_at_55%_88%,rgba(0,0,0,0.22),rgba(0,0,0,0)_55%),linear-gradient(135deg,#581c87_0%,#1e3a8a_100%)] before:pointer-events-none before:absolute before:inset-0 before:opacity-[0.45] before:content-[''] before:bg-[length:26px_26px] before:bg-[linear-gradient(rgba(255,255,255,0.014)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.014)_1px,transparent_1px)] md:h-full">
               <div className="pointer-events-none absolute inset-x-0 top-0 z-[32] flex gap-1 px-3 pt-[calc(12px+env(safe-area-inset-top))] md:pt-3">
                 {PROGRESS_SEGMENT_KEYS.map((key, index) => {
                   const segmentStyle = {

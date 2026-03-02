@@ -64,7 +64,7 @@ export default function ReelArticle({
     <section
       ref={setRef}
       data-snap-index={index}
-      className="reel-article relative h-[calc(100dvh-76px-env(safe-area-inset-bottom))] snap-start [scroll-snap-stop:always] overflow-hidden md:h-dvh"
+      className="relative h-[calc(100dvh-76px-env(safe-area-inset-bottom))] snap-start [scroll-snap-stop:always] overflow-hidden md:h-full"
       aria-label={`記事: ${item.title}`}
     >
       <ReelProgress total={totalSlides} current={currentIndex} />
