@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useScrollSnap } from "@/hooks/useScrollSnap";
 import type { ItemType } from "@/types/item";
 import ReelArticle from "./article/ReelArticle";
+import { useFeedBodyClasses } from "./hooks/useFeedBodyClasses";
 
 type ReelFeedProps = {
   items: ItemType[];
@@ -16,11 +17,7 @@ export default function ReelFeed({ items, initialArticleId }: ReelFeedProps) {
     { direction: "vertical" },
   );
 
-  // feed-active クラスをbodyに付与
-  useEffect(() => {
-    document.body.classList.add("feed-active");
-    return () => document.body.classList.remove("feed-active");
-  }, []);
+  useFeedBodyClasses();
 
   // 初期表示時に指定記事にスクロール
   useEffect(() => {

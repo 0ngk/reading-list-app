@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useFeedBodyClasses } from "@/components/reel/hooks/useFeedBodyClasses";
 
 const PROGRESS_SEGMENTS = [
   { key: "seg-1", delayClass: "after:[animation-delay:0s]" },
@@ -16,10 +16,7 @@ const SHIMMER_CLASS =
   "relative overflow-hidden after:pointer-events-none after:absolute after:inset-0 after:translate-x-[-130%] after:content-[''] after:bg-[linear-gradient(115deg,transparent_0%,rgba(255,255,255,0.06)_35%,rgba(255,255,255,0.28)_50%,rgba(255,255,255,0.06)_65%,transparent_100%)] after:animate-[reel-loading-sweep_2s_ease-in-out_infinite] motion-reduce:after:animate-none motion-reduce:after:transition-none";
 
 export default function FeedLoading() {
-  useEffect(() => {
-    document.body.classList.add("feed-active");
-    return () => document.body.classList.remove("feed-active");
-  }, []);
+  useFeedBodyClasses();
 
   return (
     <main

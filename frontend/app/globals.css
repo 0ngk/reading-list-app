@@ -9,12 +9,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-body.feed-active {
-  overflow: hidden;
-  background-color: #000;
-  padding-bottom: 0;
-}
-
 @keyframes reel-title-marquee {
   0%,
   10% {
