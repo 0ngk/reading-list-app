@@ -99,12 +99,12 @@ export default function ReelCommentsSheet({
     e.stopPropagation();
   };
 
-  const backdropClass = `absolute inset-0 z-[60] bg-[radial-gradient(circle_at_24%_8%,rgba(249,115,22,0.2)_0%,rgba(0,0,0,0)_38%),linear-gradient(180deg,rgba(6,8,12,0.08)_0%,rgba(3,5,9,0.72)_48%,rgba(0,0,0,0.86)_100%)] transition-opacity duration-250 ease-out ${
+  const backdropClass = `absolute inset-0 z-[60] bg-black/78 transition-opacity duration-250 ease-out ${
     open
       ? "visible pointer-events-auto opacity-100"
       : "invisible pointer-events-none opacity-0"
   }`;
-  const sheetClass = `absolute inset-x-0 bottom-0 z-[61] flex max-h-[min(78%,calc(100%-16px))] flex-col overflow-hidden rounded-t-[24px] border border-white/10 border-b-0 bg-[linear-gradient(180deg,rgba(8,11,16,0.92)_0%,rgba(7,9,14,0.98)_100%)] shadow-[0_-26px_56px_rgba(0,0,0,0.52)] [backdrop-filter:blur(18px)] [-webkit-backdrop-filter:blur(18px)] transition-[transform,opacity,visibility] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+  const sheetClass = `absolute inset-x-0 bottom-0 z-[61] flex max-h-[min(78%,calc(100%-16px))] flex-col overflow-hidden rounded-t-[24px] border border-white/10 border-b-0 bg-[#07090e]/95 shadow-[0_-26px_56px_rgba(0,0,0,0.52)] [backdrop-filter:blur(18px)] [-webkit-backdrop-filter:blur(18px)] transition-[transform,opacity,visibility] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] ${
     open
       ? "visible pointer-events-auto translate-y-0 opacity-100"
       : "invisible pointer-events-none translate-y-[calc(100%+12px)] opacity-0"
@@ -114,7 +114,7 @@ export default function ReelCommentsSheet({
   const textareaClass =
     "block min-h-11 max-h-[132px] w-full resize-none rounded-[14px] border border-white/16 bg-white/[0.1] px-3.5 py-[11px] text-sm leading-[1.45] text-white outline-none placeholder:text-white/45 transition-[border-color,background,box-shadow] duration-200 focus:border-orange-500/60 focus:bg-white/[0.14] focus:shadow-[0_0_0_3px_rgba(249,115,22,0.16)] [box-sizing:border-box] [field-sizing:content] [font-family:inherit] motion-reduce:transition-none";
   const submitButtonClass =
-    "flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-0 bg-[linear-gradient(180deg,#fb923c_0%,#f97316_100%)] text-[17px] text-white shadow-[0_8px_18px_rgba(249,115,22,0.28),inset_0_1px_0_rgba(255,255,255,0.25)] transition-[opacity,transform,box-shadow] duration-200 ease-out enabled:cursor-pointer enabled:hover:scale-105 enabled:hover:shadow-[0_10px_22px_rgba(249,115,22,0.35),inset_0_1px_0_rgba(255,255,255,0.25)] enabled:active:scale-95 disabled:cursor-not-allowed disabled:opacity-45 disabled:shadow-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/85 motion-reduce:transition-none";
+    "flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-0 bg-orange-500 text-[17px] text-white shadow-[0_8px_18px_rgba(249,115,22,0.28),inset_0_1px_0_rgba(255,255,255,0.25)] transition-[opacity,transform,box-shadow] duration-200 ease-out enabled:cursor-pointer enabled:hover:scale-105 enabled:hover:shadow-[0_10px_22px_rgba(249,115,22,0.35),inset_0_1px_0_rgba(255,255,255,0.25)] enabled:active:scale-95 disabled:cursor-not-allowed disabled:opacity-45 disabled:shadow-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/85 motion-reduce:transition-none";
 
   return (
     <div
@@ -168,11 +168,11 @@ export default function ReelCommentsSheet({
 
         <div
           ref={listRef}
-          className="flex-1 overflow-y-auto bg-[linear-gradient(180deg,rgba(255,255,255,0.03)_0%,rgba(255,255,255,0)_20%)] px-4 pt-3 pb-3 [overscroll-behavior:contain] [scrollbar-color:rgba(255,255,255,0.15)_transparent] [scrollbar-width:thin]"
+          className="flex-1 overflow-y-auto bg-white/[0.02] px-4 pt-3 pb-3 [overscroll-behavior:contain] [scrollbar-color:rgba(255,255,255,0.15)_transparent] [scrollbar-width:thin]"
         >
           {comments.length === 0 ? (
             <div
-              className="mt-2 rounded-2xl border border-dashed border-white/16 bg-[linear-gradient(180deg,rgba(255,255,255,0.06)_0%,rgba(255,255,255,0.02)_100%)] px-4 py-5 text-center"
+              className="mt-2 rounded-2xl border border-dashed border-white/16 bg-white/[0.04] px-4 py-5 text-center"
               aria-live="polite"
             >
               <p className="m-0 text-sm leading-[1.4] font-semibold text-white/82">
@@ -188,7 +188,7 @@ export default function ReelCommentsSheet({
                 key={c.id}
                 className={`group relative mt-2.5 flex gap-3 rounded-2xl border px-3 py-3 ${
                   c.isMine
-                    ? "border-orange-500/30 bg-[linear-gradient(160deg,rgba(249,115,22,0.2)_0%,rgba(249,115,22,0.06)_48%,rgba(255,255,255,0.04)_100%)] shadow-[0_8px_20px_rgba(249,115,22,0.12)]"
+                    ? "border-orange-500/30 bg-orange-500/12 shadow-[0_8px_20px_rgba(249,115,22,0.12)]"
                     : "border-white/10 bg-white/[0.04]"
                 }`}
               >
@@ -230,7 +230,7 @@ export default function ReelCommentsSheet({
           )}
         </div>
 
-        <div className="grid shrink-0 grid-cols-[minmax(0,1fr)_auto] items-start gap-x-2.5 gap-y-1.5 border-t border-white/10 bg-[linear-gradient(180deg,rgba(7,10,16,0.75)_0%,rgba(8,11,16,0.94)_100%)] px-4 pt-3 pb-[calc(12px+env(safe-area-inset-bottom))] md:pb-3">
+        <div className="grid shrink-0 grid-cols-[minmax(0,1fr)_auto] items-start gap-x-2.5 gap-y-1.5 border-t border-white/10 bg-[#070a10]/88 px-4 pt-3 pb-[calc(12px+env(safe-area-inset-bottom))] md:pb-3">
           <div className="relative min-w-0">
             <textarea
               className={textareaClass}
