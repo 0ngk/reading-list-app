@@ -1,11 +1,16 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useScrollSnap } from "@/hooks/useScrollSnap";
 import type { ItemType } from "@/types/item";
 import ReelCommentsSheet from "../comments/ReelCommentsSheet";
 import type { ReelComment } from "../comments/types";
 import { useSlideTapNavigation } from "../hooks/useSlideTapNavigation";
+import {
+  EDGE_SWIPE_THRESHOLD,
+  EDGE_TRANSITION_COOLDOWN_MS,
+  EDGE_WHEEL_THRESHOLD,
+} from "../model/constants";
 import ReelOverlay from "../overlay/ReelOverlay";
 import ReelProgress from "./ReelProgress";
 import ReelSlide from "./ReelSlide";
@@ -15,6 +20,11 @@ type ReelArticleProps = {
   index: number;
   isFocused: boolean;
   setRef: (el: HTMLElement | null) => void;
+  canGoPrevArticle: boolean;
+  canGoNextArticle: boolean;
+  onRequestPrevArticle: () => void;
+  onRequestNextArticle: () => void;
+  entryResetToken: number;
 };
 
 export default function ReelArticle({
@@ -22,21 +32,67 @@ export default function ReelArticle({
   index,
   isFocused,
   setRef,
+  canGoPrevArticle,
+  canGoNextArticle,
+  onRequestPrevArticle,
+  onRequestNextArticle,
+  entryResetToken,
 }: ReelArticleProps) {
   const totalSlides = item.aiSummary.length;
+  const lastSlideIndex = totalSlides - 1;
   const { currentIndex, scrollTo, containerRef, setItemRef } = useScrollSnap(
     totalSlides,
     { direction: "horizontal" },
   );
+  const [comments, setComments] = useState<ReelComment[]>([]);
+  const [isCommentsOpen, setIsCommentsOpen] = useState(false);
+  const [draft, setDraft] = useState("");
+  const lastEdgeTransitionAtRef = useRef(0);
+  const wheelEdgeDeltaRef = useRef(0);
+  const handledEntryResetTokenRef = useRef(entryResetToken);
+
+  const tryEdgeTransition = useCallback(
+    (direction: "prev" | "next") => {
+      if (!isFocused || isCommentsOpen) return false;
+      const now = Date.now();
+      if (now - lastEdgeTransitionAtRef.current < EDGE_TRANSITION_COOLDOWN_MS) {
+        return false;
+      }
+
+      if (direction === "prev") {
+        if (!canGoPrevArticle) return false;
+        onRequestPrevArticle();
+      } else {
+        if (!canGoNextArticle) return false;
+        onRequestNextArticle();
+      }
+
+      lastEdgeTransitionAtRef.current = now;
+      wheelEdgeDeltaRef.current = 0;
+      return true;
+    },
+    [
+      canGoNextArticle,
+      canGoPrevArticle,
+      isCommentsOpen,
+      isFocused,
+      onRequestNextArticle,
+      onRequestPrevArticle,
+    ],
+  );
+
   const { onPointerDown, onPointerUp } = useSlideTapNavigation({
     currentIndex,
     totalSlides,
     scrollTo,
+    swipeThreshold: EDGE_SWIPE_THRESHOLD,
+    onEdgePrev: () => {
+      tryEdgeTransition("prev");
+    },
+    onEdgeNext: () => {
+      tryEdgeTransition("next");
+    },
   });
-
-  const [comments, setComments] = useState<ReelComment[]>([]);
-  const [isCommentsOpen, setIsCommentsOpen] = useState(false);
-  const [draft, setDraft] = useState("");
 
   const handleOpenComments = useCallback(() => setIsCommentsOpen(true), []);
   const handleCloseComments = useCallback(() => setIsCommentsOpen(false), []);
@@ -60,6 +116,108 @@ export default function ReelArticle({
     setComments((prev) => prev.filter((c) => c.id !== commentId));
   }, []);
 
+  const handleWheel = useCallback(
+    (e: React.WheelEvent<HTMLElement>) => {
+      if (!isFocused || isCommentsOpen) return;
+
+      const { deltaX, deltaY } = e;
+      if (Math.abs(deltaX) <= Math.abs(deltaY)) {
+        wheelEdgeDeltaRef.current = 0;
+        return;
+      }
+
+      const isTowardsPrev = deltaX < 0;
+      const isTowardsNext = deltaX > 0;
+      const canTriggerPrev = isTowardsPrev && currentIndex === 0;
+      const canTriggerNext = isTowardsNext && currentIndex === lastSlideIndex;
+      if (!canTriggerPrev && !canTriggerNext) {
+        wheelEdgeDeltaRef.current = 0;
+        return;
+      }
+
+      if (
+        (wheelEdgeDeltaRef.current > 0 && deltaX < 0) ||
+        (wheelEdgeDeltaRef.current < 0 && deltaX > 0)
+      ) {
+        wheelEdgeDeltaRef.current = 0;
+      }
+
+      wheelEdgeDeltaRef.current += deltaX;
+      if (Math.abs(wheelEdgeDeltaRef.current) < EDGE_WHEEL_THRESHOLD) return;
+
+      const transitioned = canTriggerPrev
+        ? tryEdgeTransition("prev")
+        : tryEdgeTransition("next");
+      if (transitioned) e.preventDefault();
+      wheelEdgeDeltaRef.current = 0;
+    },
+    [
+      currentIndex,
+      isCommentsOpen,
+      isFocused,
+      lastSlideIndex,
+      tryEdgeTransition,
+    ],
+  );
+
+  useEffect(() => {
+    if (!isFocused) return;
+    if (entryResetToken === handledEntryResetTokenRef.current) return;
+    handledEntryResetTokenRef.current = entryResetToken;
+    requestAnimationFrame(() => scrollTo(0));
+  }, [entryResetToken, isFocused, scrollTo]);
+
+  useEffect(() => {
+    if (!isFocused || isCommentsOpen) return;
+
+    const isTextInputLikeTarget = (target: EventTarget | null) => {
+      if (!(target instanceof HTMLElement)) return false;
+      if (target.isContentEditable) return true;
+      const tagName = target.tagName;
+      return (
+        tagName === "INPUT" ||
+        tagName === "TEXTAREA" ||
+        tagName === "SELECT" ||
+        Boolean(target.closest("[contenteditable='true']"))
+      );
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.defaultPrevented) return;
+      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+      if (isTextInputLikeTarget(e.target)) return;
+
+      if (e.key === "ArrowLeft") {
+        if (currentIndex > 0) {
+          e.preventDefault();
+          scrollTo(currentIndex - 1);
+          return;
+        }
+        if (tryEdgeTransition("prev")) e.preventDefault();
+        return;
+      }
+
+      if (currentIndex < lastSlideIndex) {
+        e.preventDefault();
+        scrollTo(currentIndex + 1);
+        return;
+      }
+      if (tryEdgeTransition("next")) e.preventDefault();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [
+    currentIndex,
+    isCommentsOpen,
+    isFocused,
+    lastSlideIndex,
+    scrollTo,
+    tryEdgeTransition,
+  ]);
+
   return (
     <section
       ref={setRef}
@@ -76,6 +234,7 @@ export default function ReelArticle({
         aria-label={`AI要約: 全${totalSlides}枚`}
         onPointerDown={onPointerDown}
         onPointerUp={onPointerUp}
+        onWheel={handleWheel}
       >
         {item.aiSummary.map((sentence, i) => (
           <ReelSlide
