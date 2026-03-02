@@ -30,7 +30,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className={`${plusJakartaSans.variable} pb-[76px] md:pb-0`}>
+      <body
+        className={`${plusJakartaSans.variable} m-0 bg-slate-50 text-slate-800 antialiased [-moz-osx-font-smoothing:grayscale] pb-[76px] md:pb-0`}
+      >
         <AntdRegistry>
           <ConfigProvider theme={theme}>
             {children}
